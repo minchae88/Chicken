@@ -58,18 +58,6 @@ public class SalesView extends JPanel implements ActionListener {
 		this.height = (int) (height * 0.9);
 		addLayout();
 		eventProc();
-		
-		{
-			SalesModel model;
-			try {
-				model = new SalesModel();
-				model.tmp();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
 	}
         
 	// 이미지 사이즈 조절하는 메소드당당당
@@ -81,6 +69,7 @@ public class SalesView extends JPanel implements ActionListener {
 	private void addLayout() {
 		// north
 		JPanel p_north = new JPanel();
+		
 		// radio button
 		JPanel p_north_upper = new JPanel();
 		rbDate.setActionCommand("Date");

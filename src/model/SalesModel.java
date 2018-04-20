@@ -3,37 +3,19 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class SalesModel {
+	Format formatter = new SimpleDateFormat("yyyy-MM-dd");
 	Connection con;
 
 	public SalesModel() throws Exception {
 		con = DBCon.getConnection();
 	}
 
-	public void tmp() {
-		String sql = "select price, stock from menu where menu=?";
-		try {
-			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setString(1, "참이슬");
-			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()) {
-				System.out.println(rs.getString("STOCK"));
-				System.out.println(rs.getString("PRICE"));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	public ArrayList<ArrayList<String>> getDateSales(String period, Date startDate, Date endDate) {
 		Format formatter = new SimpleDateFormat("yyyy-MM-dd");
 		ArrayList<ArrayList<String>> data = new ArrayList<>();
@@ -65,23 +47,38 @@ public class SalesModel {
 		return data;
 	}
 
-	public ArrayList getMenuSales(String period, Date startDate, Date endDate) {
-		ArrayList data = new ArrayList();
-		String sql = "SELECT * FROM dailysales " + " ";
+	public ArrayList<ArrayList<String>> getMenuSales(String period, Date startDate, Date endDate) {
+		ArrayList<ArrayList<String>> data = new ArrayList<>();
+		String sql;
+		if (period.equals("Daily"))
+			sql = "SELECT menu, sum(count) sum FROM menusales WHERE to_char(order_date,'yyyy-MM-dd') >= ? AND to_char(order_date,'yyyy-MM-dd') <= ? GROUP BY menu ORDER BY sum(count) desc";
+		else
+			sql = "select menu, month, sum from(SELECT row_number() over(partition by to_char(order_date, 'yyyy-MM') order by to_char(order_date, 'yyyy-MM')) rnum, menu, to_char(order_date,'yyyy-MM') month, sum(count) sum FROM menusales WHERE to_char(order_date,'yyyy-MM-dd') >= ? AND to_char(order_date,'yyyy-MM-dd') <= ? GROUP BY menu, to_char(order_date,'yyyy-MM') ORDER BY to_char(order_date, 'yyyy-MM') asc, sum(count) desc) where rnum = 1";
+
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, formatter.format(startDate));
+			ps.setString(2, formatter.format(endDate));
 			ResultSet rs = ps.executeQuery();
+			
+			if (period.equals("Daily")) {
+				while (rs.next()) {
+					ArrayList<String> temp = new ArrayList<>();
+					temp.add(rs.getString("menu"));
+					temp.add(rs.getString("sum"));
 
-			while (rs.next()) {
-				ArrayList temp = new ArrayList();
-				temp.add(rs.getInt("vid"));
-				temp.add(rs.getString("title"));
-				temp.add(rs.getString("name"));
-				temp.add(rs.getString("tel"));
-				temp.add(rs.getDate("rent_date"));
-				temp.add(rs.getDate("return_date"));
+					data.add(temp);
+				}
+			}
+			else {
+				while (rs.next()) {
+					ArrayList<String> temp = new ArrayList<>();
+					temp.add(rs.getString("menu"));
+					temp.add(rs.getString("sum"));
+					temp.add(rs.getString("month"));
 
-				data.add(temp);
+					data.add(temp);
+				}
 			}
 
 			rs.close();

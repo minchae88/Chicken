@@ -26,9 +26,10 @@ import model.SalesModel;
 
 public class Chart {
 	
-	DefaultCategoryDataset dataset1 = new DefaultCategoryDataset();
+	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 	
 	public Chart() {
+		
 	}
 	
 	public void setData(String rb1, String rb2, Date startDate, Date endDate) {
@@ -37,16 +38,20 @@ public class Chart {
 		try {
 			model = new SalesModel();
 			ArrayList<ArrayList<String>> list = rb1.equals("Date")? model.getDateSales(rb2, startDate, endDate) : model.getMenuSales(rb2, startDate, endDate);
-			//ArrayList<ArrayList<String>> list = model.getDailySales(rb2, startDate, endDate);
-			for (ArrayList<String> ar : list) {
-				dataset1.addValue(Integer.parseInt(ar.get(1)), "S1", String.valueOf(ar.get(0)));
+			if(list.get(0).size() == 3) {
+				for (ArrayList<String> ar : list) {
+					dataset.addValue(Integer.parseInt(ar.get(1)), ar.get(0), ar.get(2));
+				}
+			} else {
+				for (ArrayList<String> ar : list)
+					dataset.addValue(Integer.parseInt(ar.get(1)), String.valueOf(ar.get(0)), String.valueOf(ar.get(0)));
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 	}
-	
 	
 	public JFreeChart getChart(String[] data, Date startDate, Date endDate) {
 		setData(data[0], data[1], startDate, endDate);
@@ -83,11 +88,11 @@ public class Chart {
 		
 		CategoryPlot plot = new CategoryPlot();
 		if(kind.equals("BarChart")) {
-			plot.setDataset(dataset1);
+			plot.setDataset(dataset);
 			plot.setRenderer(renderer);
 		}
 		else if(kind.equals("LineChart")) {
-			plot.setDataset(dataset1);
+			plot.setDataset(dataset);
 			plot.setRenderer(renderer2);
 		}
 		
