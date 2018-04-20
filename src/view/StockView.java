@@ -39,6 +39,8 @@ public class StockView extends JPanel implements ActionListener {
 	StockTableOrderModel tbModelStockOrder; // JTable의 모델2
 
 	StockModel model;// 비지니스로직(JDBC 연결)
+	
+	int selectedRow;
 
 	// 이미지 사이즈 조절(사진명,가로,세로)
 	public ImageIcon getIcon(String name, int width, int height) {
@@ -223,9 +225,12 @@ public class StockView extends JPanel implements ActionListener {
 		}
 
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-
+			ArrayList tmp = new ArrayList();
+			tmp.add(data.get(rowIndex).get(0));
+			tmp.add((Integer)data.get(rowIndex).get(1)+1);
+			System.out.println(data.set(rowIndex, tmp));
 		}
-		
+
 		public boolean contains(String data1) {
 			for (ArrayList list : data) {
 				System.out.println(list.get(1));
@@ -269,10 +274,8 @@ public class StockView extends JPanel implements ActionListener {
 			public void mouseClicked(MouseEvent e) {
 				int row = tableStockOrder.getSelectedRow();
 				int col = tableStockOrder.getSelectedColumn();
-				Object str = tableStockOrder.getValueAt(row, col);// 선택한
-																	// 셀(좌표,행에)의
-																	// 값 가져옴
-
+				Object str = tableStockOrder.getValueAt(row, col);// 선택한 셀(좌표,행에)의 값 가져옴
+				selectedRow = row;
 				// model.setDataVector(data, columnNames);
 				// tableOrderList.setModel(model);
 				// model.fireTableDataChanged();
@@ -315,13 +318,13 @@ public class StockView extends JPanel implements ActionListener {
 	}
 
 	private void bAddOrder() {// 좌표 받아와서,해당 좌표의 값을 변경
-		int row = tableStockOrder.getSelectedRow();
+		int row = selectedRow;
 		int col = 1;
 		Integer str = (Integer) tableStockOrder.getValueAt(row, col);// 선택한
 																		// 셀(좌표,행에)의
 																		// 값 가져옴
-		tableStockOrder.setValueAt(str + 1, row, col);
-
+		tableStockOrder.setValueAt(str+1, row, col);
+		tbModelStockOrder.fireTableDataChanged();
 		// 특정 좌표의 값을 바꾸는 것은 setValueAt()
 
 	}
