@@ -72,14 +72,14 @@ public class SalesView extends JPanel implements ActionListener {
 		
 	}
         
-	// 이미지 사이즈 조절하는 메소드
+	// 이미지 사이즈 조절하는 메소드당당당
 	public ImageIcon getIcon(String name, int width, int height) {
 		return new ImageIcon(new ImageIcon("src\\view\\chickimg\\" + name + ".png").getImage().getScaledInstance(width,
 				height, Image.SCALE_DEFAULT));
 	}
 
 	private void addLayout() {
-		// north//
+		// north
 		JPanel p_north = new JPanel();
 		// radio button
 		JPanel p_north_upper = new JPanel();

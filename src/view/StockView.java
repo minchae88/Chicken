@@ -34,7 +34,7 @@ public class StockView extends JPanel implements ActionListener{
 	StockTableModel tbModelStock; //JTable의 모델1
 	StockTableOrderModel tbModelStockOrder; //JTable의 모델2
 	
-    StockModel model;//비지니스로직(JDBC 연결)
+    StockModel model;//비지니스로직(JDBC 연결) ㅎㅎㅎ
 
     //이미지 사이즈 조절(사진명,가로,세로)
     public ImageIcon getIcon(String name, int width, int height) {
