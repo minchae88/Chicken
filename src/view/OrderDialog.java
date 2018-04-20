@@ -106,7 +106,7 @@ public class OrderDialog extends JDialog implements ActionListener {
 		
 		setSize(500,500);
 		setVisible(true);
-		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+
 	}
 	
 	public void eventProc() {

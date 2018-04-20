@@ -20,6 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import main.ChickenStore;
+
 public class OrderView extends JPanel implements ActionListener {
 	
 	JLabel menu, orderList; // 왼쪽, 오른쪽의 제목
@@ -40,9 +42,11 @@ public class OrderView extends JPanel implements ActionListener {
 	Vector columnNames = new Vector(); // 컬럼의 이름을 벡터로 저장
 	Vector<Vector<String>> data = new Vector<>(); // 주문 목록에 저장될 데이터들을 저장하는 벡터
 	
+	ChickenStore parents;
 	// 생성자
-	public OrderView() {
-
+	public OrderView(ChickenStore parents) {
+		
+		this.parents = parents;
 		addLayout(); // 화면설계
 		eventProc(); // 이벤트 호출
 		connectDB(); // 디비 연결
@@ -195,8 +199,9 @@ public class OrderView extends JPanel implements ActionListener {
 			public void mouseClicked(MouseEvent e) {
 				int row = tableOrderList.getSelectedRow();
 				int col = 0;
-				//String data1 = (String) tableOrderList.getValueAt(row, col);
+				String data1 = (String) tableOrderList.getValueAt(row, col);
 				OrderDialog orderDialog = new OrderDialog();
+				orderDialog.orderField.setText(data1);
 				orderDialog.setVisible(true);
 			}
 		});
@@ -208,8 +213,12 @@ public class OrderView extends JPanel implements ActionListener {
 		
 		Object evt = e.getSource();
 		if (evt == bStoreManagement) {
-			new LoginDialog();
-			//new OrderDialog();
+			try {
+				new LoginDialog(parents);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
 		} 
 		for(int i=0; i<size; i++){
 			 if (evt == btn[i]) {
