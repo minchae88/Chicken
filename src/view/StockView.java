@@ -38,8 +38,7 @@ public class StockView extends JPanel implements ActionListener{
 	StockTableOrderModel tbModelStockOrder; //JTable의 모델2
 	
     StockModel model;//비지니스로직(JDBC 연결)
-    
-    //Vector<Vector<String>> data = new Vector<>(); // 주문 목록에 저장될 데이터들을 저장하는 벡터?
+
     //이미지 사이즈 조절(사진명,가로,세로)
     public ImageIcon getIcon(String name, int width, int height) {
 		return new ImageIcon(new ImageIcon("src\\view\\chickimg\\"+name+".png").getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
