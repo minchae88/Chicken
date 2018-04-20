@@ -92,7 +92,7 @@ public class StockView extends JPanel implements ActionListener{
 	     tableStockOrder.setPreferredScrollableViewportSize(new Dimension(400, 300));
 	     tableStock.getColumn("메뉴").setPreferredWidth(80);
 	     tableStock.getColumn("재고량").setPreferredWidth(80);
-
+      
      //화면 위치 -왼쪽
 	     JPanel p_west = new JPanel(new BorderLayout());
 	     JPanel p_west_west=new JPanel();
