@@ -23,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 import model.StockModel;
 
@@ -165,13 +166,7 @@ public class StockView extends JPanel implements ActionListener {
 
 		ArrayList data = new ArrayList();
 		String[] columnNames = { "메뉴", "재고량" };
-
-		// =============================================================
-		// 1. 기본적인 TabelModel 만들기
-		// 아래 세 함수는 TabelModel 인터페이스의 추상함수인데
-		// AbstractTabelModel에서 구현되지 않았기에...
-		// 반드시 사용자 구현 필수!!!!
-
+		
 		public int getColumnCount() {
 			return columnNames.length;
 		}
@@ -188,19 +183,12 @@ public class StockView extends JPanel implements ActionListener {
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
-
 	}
 
 	class StockTableOrderModel extends AbstractTableModel {
 
 		ArrayList<ArrayList> data = new ArrayList<ArrayList>();
 		String[] columnNames = { "메뉴", "주문량" };
-
-		// =============================================================
-		// 1. 기본적인 TabelModel 만들기
-		// 아래 세 함수는 TabelModel 인터페이스의 추상함수인데
-		// AbstractTabelModel에서 구현되지 않았기에...
-		// 반드시 사용자 구현 필수!!!!
 
 		public int getColumnCount() {
 			return columnNames.length;
@@ -221,25 +209,24 @@ public class StockView extends JPanel implements ActionListener {
 
 		public boolean isCellEditable(int row, int col) {
 			return true;
-
 		}
 
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+
 			ArrayList tmp = new ArrayList();
 			tmp.add(data.get(rowIndex).get(0));
-			tmp.add((Integer)data.get(rowIndex).get(1)+1);
+			tmp.add(aValue);
 			System.out.println(data.set(rowIndex, tmp));
 		}
 
+		//재고주문내역테이블에 값은 메뉴명이 있는지 확인
 		public boolean contains(String data1) {
-			for (ArrayList list : data) {
-				System.out.println(list.get(1));
-				if (list.get(0).equals(data1))
-					return true;
+			for (ArrayList list : data) {//향상된for문으로 data 스캔
+			  if (list.get(0).equals(data1))// list의 0번째 메뉴명이 data1의 값과 같은지,
+			  return true;
 			}
 			return false;
 		}
-
 	}
 
 	void eventProc() {
@@ -252,22 +239,21 @@ public class StockView extends JPanel implements ActionListener {
 		// 재고목록테이블에 메뉴명 클릭하면, 주문목록 테이블에 메뉴 이름 뜨게
 		tableStock.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				// 가져온 메뉴 이름을 String data에 저장
+			// 가져온 메뉴 이름을 String data에 저장
 				int row = tableStock.getSelectedRow();
-				int col = 0;
+				int col = 0;//0번째 컬럼(메뉴명)
 				String data1 = (String) tableStock.getValueAt(row, col);
-				// 저장한값들을 Arraylist에 담아서
+			// 저장한값들을 Arraylist에 담아서
 				ArrayList temp = new ArrayList();
-				temp.add(data1);// 메뉴컬럼
-				temp.add(1);// 주문량컬럼-디폴트값 1
-
-				if (!tbModelStockOrder.contains(data1)) {
-					tbModelStockOrder.data.add(temp);// 모델에 붙여서 재고주문목록에 출력
-					tbModelStockOrder.fireTableDataChanged();
+				temp.add(data1);// 메뉴명				
+				temp.add(1);// 주문량컬럼의 값-디폴트값 1로 설정
+  			if (!tbModelStockOrder.contains(data1)) {//같은메뉴명이 테이블상에 없다면
+				tbModelStockOrder.data.add(temp);// 모델에 붙여서 재고주문목록에 추가
+				tbModelStockOrder.fireTableDataChanged();
 				}
-				// 넘어왔을때 메뉴명이 같으면 행이 늘어나면 안됨
 			}
 		});
+
 
 		// 재고주문내역테이블 마우스 클릭 이벤트-클릭했을때 좌표를 얻어옮
 		tableStockOrder.addMouseListener(new MouseAdapter() {
@@ -276,11 +262,11 @@ public class StockView extends JPanel implements ActionListener {
 				int col = tableStockOrder.getSelectedColumn();
 				Object str = tableStockOrder.getValueAt(row, col);// 선택한 셀(좌표,행에)의 값 가져옴
 				selectedRow = row;
-				// model.setDataVector(data, columnNames);
-				// tableOrderList.setModel(model);
-				// model.fireTableDataChanged();
+
 			}
 		});
+
+
 
 	}
 
@@ -294,16 +280,14 @@ public class StockView extends JPanel implements ActionListener {
 			bCancelDelete();
 		} else if (evt == bAdd) { // +버튼 눌렀을때
 			try {
-				JOptionPane.showMessageDialog(null, "주문추가");
 				bAddOrder();// +버튼 누르면 주문량 증가
-				// search(); //+버튼을 누르자마자 재고목록이 바로 바뀌게,
+				//search(); //+버튼을 누르자마자 재고목록이 바로 바뀌게,
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else if (evt == bMinus) {// -버튼 눌렀을때
 			try {
-				JOptionPane.showMessageDialog(null, "주문 취소");
-				bMinusOrder();// -버튼 누르면 주문량 증가
+	 			 bMinusOrder();// -버튼 누르면 주문량 증가
 				// search(); //-버튼을 누르자마자 재고목록이 바로 바뀌게,
 			} catch (Exception e) {
 			}
@@ -314,19 +298,22 @@ public class StockView extends JPanel implements ActionListener {
 	}
 
 	private void bMinusOrder() {
-
+		int row = selectedRow;//선택한 행,
+		int col = 1;
+		Integer str = (Integer) tableStockOrder.getValueAt(row, col);
+		tableStockOrder.setValueAt(str-1, row, col);
+		tbModelStockOrder.fireTableDataChanged();
+		// 특정 좌표의 값을 바꾸는 것은 setValueAt()
 	}
 
 	private void bAddOrder() {// 좌표 받아와서,해당 좌표의 값을 변경
-		int row = selectedRow;
+
+		int row = selectedRow;//선택한 행,
 		int col = 1;
-		Integer str = (Integer) tableStockOrder.getValueAt(row, col);// 선택한
-																		// 셀(좌표,행에)의
-																		// 값 가져옴
+		Integer str = (Integer) tableStockOrder.getValueAt(row, col);
 		tableStockOrder.setValueAt(str+1, row, col);
 		tbModelStockOrder.fireTableDataChanged();
 		// 특정 좌표의 값을 바꾸는 것은 setValueAt()
-
 	}
 
 	private void bCancelDelete() {
