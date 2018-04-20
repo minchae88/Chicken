@@ -10,11 +10,7 @@ public class StockModel {
 
 	Connection con;
 	public StockModel() throws Exception {
-		Class.forName("oracle.jdbc.driver.OracleDriver");		
-		String url = "jdbc:oracle:thin:@70.12.115.58:1521:orcl";
-		String user = "chicken"; 
-		String pass = "chicken"; 
-		con=DriverManager.getConnection(url, user, pass);
+		con= DBCon.getConnection();
 	}
 	
    public ArrayList search() throws Exception{

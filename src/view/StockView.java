@@ -8,7 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -23,7 +25,8 @@ import javax.swing.border.Border;
 import javax.swing.table.AbstractTableModel;
 
 import model.StockModel;
-
+//table2.setSelectionBackground(Color.yellow);  //테이블에서 선택시 색 변하게 하는 방법
+//table2.setSelectionForeground(Color.MAGENTA);  //테이블에서 선택시 글자색 변하게 하는 방법
 public class StockView extends JPanel implements ActionListener{
 	JButton bAdd, bMinus, bPayment, bCancel, bSearchMenu;
 	JLabel laStockInfo, laStockOrderInfo;
@@ -35,7 +38,8 @@ public class StockView extends JPanel implements ActionListener{
 	StockTableOrderModel tbModelStockOrder; //JTable의 모델2
 	
     StockModel model;//비지니스로직(JDBC 연결)
-
+    
+    //Vector<Vector<String>> data = new Vector<>(); // 주문 목록에 저장될 데이터들을 저장하는 벡터?
     //이미지 사이즈 조절(사진명,가로,세로)
     public ImageIcon getIcon(String name, int width, int height) {
 		return new ImageIcon(new ImageIcon("src\\view\\chickimg\\"+name+".png").getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
@@ -204,21 +208,20 @@ class StockTableOrderModel extends AbstractTableModel {
 	            return temp.get( col ); 
 	        }
 	        
+	        
 	        public String getColumnName(int col){
 	         return columnNames[col];
 	        }
-//	        public boolean isCellEditable(int row, int col){
-//				return true;
-//			
-//			}
-
-//			public void removeTableModelListener(int select) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-
+	        public boolean isCellEditable(int row, int col){
+				return true;
+			
+			}
+	        public void setValueAt(Object aValue, int rowIndex, int columnIndex){
+	        	
+	        }
+	        
+	        
 	}
-
  
     void eventProc(){
     	bAdd.addActionListener(this);
@@ -232,17 +235,37 @@ class StockTableOrderModel extends AbstractTableModel {
 	    	public void mouseClicked(MouseEvent e) {
 	    	//가져온 메뉴 이름을 String data에 저장
 	    		int row = tableStock.getSelectedRow();
-	    		int col=0;
-	    		String data = (String)tableStock.getValueAt(row, col);
-			//저장한값들을 Arraylist에 담아서	
+	    		int col = 0;
+	    		String data1 = (String)tableStock.getValueAt(row, col);
+			 //저장한값들을 Arraylist에 담아서	
 	    		ArrayList temp = new ArrayList();
-	    		temp.add(data);//메뉴컬럼
+	    		temp.add(data1);//메뉴컬럼
 	    		temp.add(1);//주문량컬럼-디폴트값 1
+	    		
 	    		tbModelStockOrder.data.add(temp);//모델에 붙여서 재고주문목록에 출력
 	    		tbModelStockOrder.fireTableDataChanged();
- 		
-		    }
+	    		//넘어왔을때 메뉴명이 같으면 행이 늘어나면 안됨
+	    		
+	    		
+       	    }
 	     });
+	    
+	    
+	    //재고주문내역테이블 마우스 클릭 이벤트-클릭했을때 좌표를 얻어옮
+	    tableStockOrder.addMouseListener(new MouseAdapter() {
+	    	public void mouseClicked(MouseEvent e) {
+				int row = tableStockOrder.getSelectedRow();
+				int col = tableStockOrder.getSelectedColumn();
+			    Object str = tableStockOrder.getValueAt(row, col);//선택한 셀(좌표,행에)의 값 가져옴
+	
+			
+			
+//			model.setDataVector(data, columnNames);
+//			tableOrderList.setModel(model);
+//			model.fireTableDataChanged();
+		}	
+	});
+	    
    }	
 	public void actionPerformed(ActionEvent ev){
 		Object evt = ev.getSource();
@@ -254,24 +277,41 @@ class StockTableOrderModel extends AbstractTableModel {
 			bCancelDelete();
 		}else if(evt==bAdd){ //+버튼 눌렀을때
 			try {
-				JOptionPane.showMessageDialog(null, "주문추가");
-				//+버튼 누르면 주문량 증가
-				search();     //+버튼을 누르자마자 재고목록이 바로 바뀌게, 
+			JOptionPane.showMessageDialog(null, "주문추가");
+				bAddOrder();//+버튼 누르면 주문량 증가
+		//		search();     //+버튼을 누르자마자 재고목록이 바로 바뀌게, 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}else if(evt==bMinus){//-버튼 눌렀을때 
 			try{
-			JOptionPane.showMessageDialog(null, "주문 취소");
-			//-버튼 누르면 주문량 증가
-			 search();  //-버튼을 누르자마자 재고목록이 바로 바뀌게,
+				JOptionPane.showMessageDialog(null, "주문 취소");
+				bMinusOrder();//-버튼 누르면 주문량 증가
+		//		search();  //-버튼을 누르자마자 재고목록이 바로 바뀌게,
 			}catch(Exception e){
 			}
+			
 		}else if(evt==bSearchMenu){
 			searchByMenu();
 		}
 	}
 
+	private void bMinusOrder() {
+		
+		
+	}
+	private void bAddOrder() {//좌표 받아와서,해당 좌표의 값을 변경
+		int row = tableStockOrder.getSelectedRow();
+		int col = 1;
+	    Integer str = (Integer)tableStockOrder.getValueAt(row, col);//선택한 셀(좌표,행에)의 값 가져옴
+	    tableStockOrder.setValueAt(str+1, row, col);
+	    
+
+//  특정 좌표의 값을 바꾸는 것은 setValueAt()
+	    
+	    
+		
+	}
 	private void bCancelDelete() {
 		int row = tableStockOrder.getSelectedRow();
 		if(row==-1){//선택안하고 취소버튼 누르면 테이블 전체 내용 삭제
@@ -293,7 +333,7 @@ class StockTableOrderModel extends AbstractTableModel {
 			info=model.selectByPK(menu);//메뉴테이블 정보를 리스트 info에 가져옴.
 			String stock=info.get(0).get(0).toString();
 			String price=info.get(0).get(1).toString();
-     	    JOptionPane.showMessageDialog(null, "메뉴명:"+menu+" 가격:"+price+" 재고량:"+stock);
+     	    JOptionPane.showMessageDialog(null, "메뉴명: "+menu+"  가격: "+price+"  재고량: "+stock);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
