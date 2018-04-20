@@ -3,6 +3,8 @@ package chart;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.Date;
+import java.util.ArrayList;
 
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
@@ -20,32 +22,35 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.TextAnchor;
 
+import model.SalesModel;
+
 public class Chart {
 	
 	DefaultCategoryDataset dataset1 = new DefaultCategoryDataset();
 	
 	public Chart() {
-		setData();
 	}
 	
-	public void setData() {
-		dataset1.addValue(1.0, "S1", "1월");
-		dataset1.addValue(4.0, "S1", "2월");
-		dataset1.addValue(3.0, "S1", "3월");
-		dataset1.addValue(5.0, "S1", "4월");
-		dataset1.addValue(5.0, "S1", "5월");
-		dataset1.addValue(7.0, "S1", "6월");
-		dataset1.addValue(7.0, "S1", "7월");
-		dataset1.addValue(8.0, "S1", "8월");
-		dataset1.addValue(9.0, "S1", "9월");
-		dataset1.addValue(10.0, "S1", "10월");
-		dataset1.addValue(11.0, "S1", "11월");
-		dataset1.addValue(5.0, "S1", "12월");
-	}
-	
-	
-	public JFreeChart getChart(String kind) {
+	public void setData(String rb1, String rb2, Date startDate, Date endDate) {
+		SalesModel model;
 		
+		try {
+			model = new SalesModel();
+			ArrayList<ArrayList<String>> list = rb1.equals("Date")? model.getDateSales(rb2, startDate, endDate) : model.getMenuSales(rb2, startDate, endDate);
+			//ArrayList<ArrayList<String>> list = model.getDailySales(rb2, startDate, endDate);
+			for (ArrayList<String> ar : list) {
+				dataset1.addValue(Integer.parseInt(ar.get(1)), "S1", String.valueOf(ar.get(0)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	public JFreeChart getChart(String[] data, Date startDate, Date endDate) {
+		setData(data[0], data[1], startDate, endDate);
+		String kind = data[2];
 		BarRenderer renderer = new BarRenderer();
 		LineAndShapeRenderer renderer2 = new LineAndShapeRenderer();
 		CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();
