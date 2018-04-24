@@ -92,9 +92,9 @@ public class OrderDialog extends JDialog implements ActionListener {
 		payment = new JButton(getIcon("bPay", 100, 40));
 		payment.setBorderPainted(false);
 		payment.setContentAreaFilled(false);
-		delete = new JButton("Delete");
-//		delete.setBorderPainted(false);
-//		delete.setContentAreaFilled(false);
+		delete = new JButton(getIcon("bDelete", 100, 40));
+		delete.setBorderPainted(false);
+		delete.setContentAreaFilled(false);
 		cancel = new JButton(getIcon("bCancel", 100, 40));
 		cancel.setBorderPainted(false);
 		cancel.setContentAreaFilled(false);

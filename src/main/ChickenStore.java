@@ -1,5 +1,6 @@
 package main;
 
+
 import java.awt.Color;
 
 import javax.swing.JButton;
@@ -7,9 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
-import view.OrderView;
-import view.SalesView;
-import view.StockView;
+import view.*;
+
 ///
 public class ChickenStore extends JFrame {
 

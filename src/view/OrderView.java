@@ -124,11 +124,12 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		tableModel.setColumnIdentifiers(new String[] {"주문번호","메뉴명","수량","가격"});
 		// DefaultTableModel 붙이기
 
+
 		tableOrderList = new JTable(tableModel);
 		tableOrderList.setEnabled(true);
 		tableOrderList.setBackground(new Color(255, 255, 255));
 		tableOrderList.setSelectionBackground(new Color(255, 195, 0)); 
-
+   
   //테이블정렬	
 		DefaultTableCellRenderer cellAlignCenter = new DefaultTableCellRenderer();
 		cellAlignCenter.setHorizontalAlignment(JLabel.CENTER);
@@ -199,8 +200,6 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		JPanel p_east_east = new JPanel(new GridLayout(1, 10));
 		for (int i = 0; i < 10; i++) {
 			p_east_east.add(new JLabel(" "));
-
-
 		}
   //컬러
 		p_north.setBackground(Color.WHITE);
@@ -234,7 +233,7 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		add(p_east, BorderLayout.EAST);	
 
 	}
-	
+
 	// 디비 연결
 	public void connectDB() {
 		try {
@@ -285,20 +284,6 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		}
 		tableOrderList.addMouseListener(this);
 		bLogOut.addActionListener(this);
-
-		// tableOrderList.addMouseListener(new MouseAdapter() {
-		// @Override
-		// public void mouseClicked(MouseEvent e) {
-		// int row = tableOrderList.getSelectedRow();
-		// int col = 0;
-		// String data1 = (String) tableOrderList.getValueAt(row, col);
-		// JTable orderList = new JTable(model);
-		// OrderDialog orderDialog = new OrderDialog(orderList);
-		// orderDialog.orderField.setText(data1);
-		// orderDialog.setVisible(true);
-		// }
-		// });
-
 	}
 
 	// 이벤트가 발생했을때
