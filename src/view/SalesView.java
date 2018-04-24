@@ -47,11 +47,8 @@ public class SalesView extends JPanel implements ActionListener {
 	JDatePickerImpl endDate;
 
 	JComboBox<String> comboBox = new JComboBox<>();
-
 	JButton show = new JButton(getIcon("bSearch", 80, 40));
-	
 	JButton init = new JButton(getIcon("bReset", 80, 40));
-
 	BorderFactory factory;
 
 	ChartPanel panel;

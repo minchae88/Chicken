@@ -49,7 +49,7 @@ public class ChickenStore extends JFrame {
       pane.setBackgroundAt(2, Color.ORANGE);
       pane.setForegroundAt(2, Color.BLACK);
       // 탭 화면의 최초화면을 인덱스로 지정
-      pane.setSelectedIndex(1);
+      pane.setSelectedIndex(0);
       
   
       // 화면크기지정

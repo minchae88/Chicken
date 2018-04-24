@@ -53,7 +53,7 @@ public class OrderDialog extends JDialog implements ActionListener {
 		this.parents = parents;
 		addLayout();
 		eventProc();
-		connectDB();
+		// connectDB();
 		setTotalPrice();
 
 	}
@@ -65,8 +65,6 @@ public class OrderDialog extends JDialog implements ActionListener {
 	}
 
 	public void addLayout() {
-
-
 		columnNames.add("주문번호");
 		columnNames.add("메뉴명");
 		columnNames.add("수량");
@@ -75,15 +73,12 @@ public class OrderDialog extends JDialog implements ActionListener {
 		tableOrderList = new JTable(tableModel);
 		setSize(500, 500);
 
-
-		
 		title = new JLabel(getIcon("laMenuCheck", 200, 50));
 		orderNum = new JLabel(getIcon("bOrderNum", 100, 30));
-		
 
 		menuList = new JLabel(getIcon("menuList", 100, 30));
 		totalPrice = new JLabel(getIcon("bTotal", 100, 30));
-		
+
 		modify = new JButton(getIcon("bModify", 60, 30));
 		modify.setBorderPainted(false);
 		modify.setContentAreaFilled(false);
@@ -136,18 +131,13 @@ public class OrderDialog extends JDialog implements ActionListener {
 		p_south.add(cancle);
 		p_south.add(payment);
 
-
-
-	
-//컬러		
-	    p_north.setBackground(Color.ORANGE);
-	    p_center.setBackground(Color.ORANGE);
-	    p_center_north.setBackground(Color.ORANGE);
-	    p_center_center.setBackground(Color.ORANGE);
-	    p_center_south.setBackground(Color.ORANGE);
-	    p_south.setBackground(Color.ORANGE);
-		
-		
+		// 컬러
+		p_north.setBackground(Color.ORANGE);
+		p_center.setBackground(Color.ORANGE);
+		p_center_north.setBackground(Color.ORANGE);
+		p_center_center.setBackground(Color.ORANGE);
+		p_center_south.setBackground(Color.ORANGE);
+		p_south.setBackground(Color.ORANGE);
 
 		setLayout(new BorderLayout());
 		p_center.add(p_center_north, BorderLayout.NORTH);
@@ -163,7 +153,6 @@ public class OrderDialog extends JDialog implements ActionListener {
 	}
 
 	public void eventProc() {
-
 		plus.addActionListener(this);
 		minus.addActionListener(this);
 		cancle.addActionListener(this);
@@ -172,7 +161,6 @@ public class OrderDialog extends JDialog implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-
 		Object evt = e.getSource();
 		if (plus == evt) {
 			menuPlus();
@@ -181,8 +169,14 @@ public class OrderDialog extends JDialog implements ActionListener {
 			menuMinus();
 			setTotalPrice();
 		} else if (cancle == evt) {
-			tableModel.removeRow(tableOrderList.getSelectedRow());
+			int selectedRow = tableOrderList.getSelectedRow();
+			if(selectedRow == -1) {
+				setVisible(false);
+				return;
+			}
+			tableModel.removeRow(selectedRow);
 			setTotalPrice();
+			
 		} else if (payment == evt) {
 			if (insertOrderList() == 0) {
 				parents.tableModel.setNumRows(0);
@@ -193,8 +187,9 @@ public class OrderDialog extends JDialog implements ActionListener {
 	}
 
 	public void menuPlus() {
-
 		int row = tableOrderList.getSelectedRow();
+		if(row == -1) return;
+		
 		int changeNum = Integer.parseInt(String.valueOf(tableOrderList.getValueAt(row, 2))) + 1;
 		tableOrderList.setValueAt(changeNum, row, 2);
 
@@ -210,9 +205,9 @@ public class OrderDialog extends JDialog implements ActionListener {
 	public void menuMinus() {
 
 		int row = tableOrderList.getSelectedRow();
-		int totalSum = Integer.parseInt(String.valueOf(tableOrderList.getValueAt(row, 3))); // 현재
-																							// 총
-																							// 금액
+		if(row == -1) return;
+		
+		int totalSum = Integer.parseInt(String.valueOf(tableOrderList.getValueAt(row, 3))); // 현재 총 금액
 		int currentNum = Integer.parseInt(String.valueOf(tableOrderList.getValueAt(row, 2))); // 현재
 																								// 갯수
 		int price = totalSum / currentNum; // 개당 단가
@@ -235,22 +230,21 @@ public class OrderDialog extends JDialog implements ActionListener {
 		priceField.setText(String.valueOf(sum));
 	}
 
-	public void connectDB() {
-		try {
-			model = new OrderModel();
-			System.out.println("오더 디비 연결 성공");
-		} catch (Exception e) {
-			System.out.println("디비 연결 실패:" + e.getMessage());
-			e.printStackTrace();
-		}
-	}
+	// public void connectDB() {
+	// try {
+	// model = new OrderModel();
+	// System.out.println("오더 디비 연결 성공");
+	// } catch (Exception e) {
+	// System.out.println("디비 연결 실패:" + e.getMessage());
+	// e.printStackTrace();
+	// }
+	// }
 
 	public int insertOrderList() {
 		int result = 0;
 		try {
-			model.getOid();
-			model.getEmpno();
-			result = model.insertOrderList(tableModel.getDataVector());
+			result = parents.model.insertOrderList(tableModel.getDataVector());
+			parents.orderId++;
 		} catch (Exception e) {
 			System.out.println("주문 정보 전송 실패");
 			e.printStackTrace();
