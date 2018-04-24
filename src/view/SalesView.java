@@ -29,6 +29,7 @@ import org.jfree.chart.ChartPanel;
 
 import chart.Chart;
 import chart.DateLabelFormatter;
+import main.ChickenStore;
 
 public class SalesView extends JPanel implements ActionListener {
 	int width, height;
@@ -61,10 +62,14 @@ public class SalesView extends JPanel implements ActionListener {
 
 	BorderFactory factory;
 	ChartPanel panel;
+	ChickenStore parents;
+	OrderView order;
 
 	Border emptyBorder = BorderFactory.createEmptyBorder();
 
-	public SalesView(int width, int height) {
+	public SalesView(ChickenStore parents, OrderView order, int width, int height) {
+		this.parents = parents;
+		this.order = order;
 		this.width = (int) (width * 0.9);
 		this.height = (int) (height * 0.9);
 		addLayout();
@@ -204,6 +209,7 @@ public class SalesView extends JPanel implements ActionListener {
 		rbMonthly.addActionListener(this);
 		show.addActionListener(this);
 		init.addActionListener(this);
+		bLogOut.addActionListener(this);
 	}
 
 	@Override
@@ -229,7 +235,21 @@ public class SalesView extends JPanel implements ActionListener {
 			rbDaily.setVisible(false);
 			comboBox.setSelectedIndex(0);
 			panel.setChart(null);
+		} else if (evt == bLogOut) {
+			logout();
 		}
+	}
+	
+	public void logout() {
+
+		int num = JOptionPane.showConfirmDialog(null, "로그아웃 하시겠습니까?");
+		if (num == 0) {
+			
+			parents.Visible(false);
+			parents.setTabIndex(0);
+			order.bLogOut.setEnabled(false);
+
+		}	    
 	}
 
 }

@@ -10,9 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -24,13 +22,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableModel;
 
-import org.jfree.chart.block.LineBorder;
-
+import main.ChickenStore;
 import model.StockModel;
 
 public class StockView extends JPanel implements ActionListener {
@@ -44,6 +39,8 @@ public class StockView extends JPanel implements ActionListener {
 	StockTableOrderModel tbModelStockOrder; // JTable의 모델2
 
 	StockModel model;// 비지니스로직(JDBC 연결)
+	ChickenStore parents;
+	OrderView order;
 	int selectedRow;// 테이블에서 선택한 행
 
 // 이미지 사이즈 조절(사진명,가로,세로)
@@ -54,7 +51,9 @@ public class StockView extends JPanel implements ActionListener {
 
 // ==============================================
 // 생성자 함수
-	public StockView() {
+	public StockView(ChickenStore parents, OrderView order) {
+		this.parents = parents;
+		this.order = order;
 		addLayout();
 		connectDB();
 		eventProc();
@@ -281,6 +280,7 @@ public class StockView extends JPanel implements ActionListener {
 		bPayment.addActionListener(this);
 		bCancel.addActionListener(this);
 		bSearchMenu.addActionListener(this);
+		bLogOut.addActionListener(this);
 
 		// Mouse 이벤트: 재고목록테이블 클릭하면, 주문목록 테이블에 메뉴 생성
 		tableStock.addMouseListener(new MouseAdapter() {
@@ -345,6 +345,8 @@ public class StockView extends JPanel implements ActionListener {
 			}
 		} else if (evt == bSearchMenu) {
 			searchByMenu();
+		} else if (evt == bLogOut) {
+			logout();
 		}
 	}
 
@@ -400,6 +402,18 @@ public class StockView extends JPanel implements ActionListener {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+	}
+	
+	public void logout() {
+
+		int num = JOptionPane.showConfirmDialog(null, "로그아웃 하시겠습니까?");
+		if (num == 0) {
+			
+			parents.Visible(false);
+			parents.setTabIndex(0);
+			order.bLogOut.setEnabled(false);
+
+		}	    
 	}
 
 	void connectDB() {

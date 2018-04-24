@@ -24,8 +24,8 @@ public class ChickenStore extends JFrame {
   // 각각의 화면을 관리하는 클래스 객체 생성
     setSize(1000,700);
     order = new OrderView(this);
-    sales = new SalesView(getWidth(), getHeight());//매출관리
-    stock = new StockView();//재고관리 
+    sales = new SalesView(this, order, getWidth(), getHeight());//매출관리
+    stock = new StockView(this, order);//재고관리 
    
     pane.addTab("주 문", order);
     pane.addTab("매 출", sales);
