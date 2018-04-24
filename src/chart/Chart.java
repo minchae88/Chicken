@@ -67,14 +67,14 @@ public class Chart {
 
 		if (kind.equals("BarChart")) {
 			renderer.setBaseItemLabelGenerator(generator);
-			renderer.setBaseItemLabelsVisible(true);
+			renderer.setBaseItemLabelsVisible(false);
 			renderer.setBasePositiveItemLabelPosition(p_center);
 			renderer.setBaseItemLabelFont(font);
 			renderer.setSeriesPaint(0, new Color(0, 162, 255));
 
 		} else if (kind.equals("LineChart")) {
 			renderer2.setBaseItemLabelGenerator(generator);
-			renderer2.setBaseItemLabelsVisible(true);
+			renderer2.setBaseItemLabelsVisible(false);
 			renderer2.setBaseShapesVisible(true);
 			renderer2.setDrawOutlines(true);
 			renderer2.setUseFillPaint(true);

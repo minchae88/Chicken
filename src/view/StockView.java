@@ -29,11 +29,13 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 
+import org.jfree.chart.block.LineBorder;
+
 import model.StockModel;
 
 public class StockView extends JPanel implements ActionListener {
-	JButton bAdd, bMinus, bPayment, bCancel, bSearchMenu;
-	JLabel laStockInfo, laStockOrderInfo;
+	JButton bAdd, bMinus, bPayment, bCancel, bSearchMenu,bLogOut;
+	JLabel laNothing,laChickenStore, laTel;
 	JTextField tfSearchMenu;
 	Border emptyBorder = BorderFactory.createEmptyBorder();
 
@@ -73,30 +75,33 @@ public class StockView extends JPanel implements ActionListener {
 		bMinus.setBorderPainted(false);
 		bMinus.setContentAreaFilled(false);
 
-		bPayment = new JButton(getIcon("bPayment", 130, 50));
+		bPayment = new JButton(getIcon("bPayment", 100, 40));
 		bPayment.setBorder(emptyBorder);
 		bPayment.setBorderPainted(false);
 		bPayment.setContentAreaFilled(false);
 
-		bCancel = new JButton(getIcon("bCancel", 130, 50));
+		bCancel = new JButton(getIcon("bCancel", 100, 40));
 		bCancel.setBorder(emptyBorder);
 		bCancel.setBorderPainted(false);
 		bCancel.setContentAreaFilled(false);
 
-		bSearchMenu = new JButton(getIcon("bSearchMenu", 130, 50));
+		bSearchMenu = new JButton(getIcon("bSearchMenu", 100, 40));
 		bSearchMenu.setBorder(emptyBorder);
 		bSearchMenu.setBorderPainted(false);
 		bSearchMenu.setContentAreaFilled(false);
+		
+		bLogOut=new JButton(getIcon("bLogOut", 100, 40));
+		bLogOut.setBorder(emptyBorder);
+		bLogOut.setBorderPainted(false);
+		bLogOut.setContentAreaFilled(false);
 
 		// 2. 텍스트필드설정
 		tfSearchMenu = new JTextField(15);
 		// 3.라벨설정
-		laStockInfo = new JLabel(getIcon("laStockInfo", 250, 80));
-		laStockOrderInfo = new JLabel(getIcon("laStockOrderInfo", 250, 80));
-		// laStockInfo = new JLabel("재고 정보");
-		// laStockInfo.setFont(new Font("Serif",Font.BOLD,30));//폰트,글씨크기
-		// laStockInfo.setOpaque(true); //Opaque값을 true로 미리 설정해 주어야 배경색이 적용된다.
-		// laStockInfo.setBackground(Color.cyan);
+		laNothing = new JLabel(getIcon("laNothing", 250, 80));
+		laChickenStore = new JLabel(getIcon("laChickenStore", 350, 100));
+		laTel= new JLabel(getIcon("laTel", 200, 60));
+
 		
     	// 4. 테이블설정
 		tbModelStock = new StockTableModel();
@@ -111,8 +116,6 @@ public class StockView extends JPanel implements ActionListener {
 // 테이블 컬럼 너비,정렬,높이지정 메소드
 		DefaultTableCellRenderer celAlignCenter = new DefaultTableCellRenderer();
 		celAlignCenter.setHorizontalAlignment(JLabel.CENTER);
-//		DefaultTableCellRenderer celAlignRight = new DefaultTableCellRenderer();
-//		celAlignRight.setHorizontalAlignment(JLabel.RIGHT);
 		tableStock.getColumn("메뉴").setPreferredWidth(70);// 컬럼의 너비
 		tableStock.getColumn("메뉴").setCellRenderer(celAlignCenter);// 컬럼정렬
 		tableStock.getColumn("재고량").setPreferredWidth(40);
@@ -124,20 +127,23 @@ public class StockView extends JPanel implements ActionListener {
 		tableStockOrder.getColumn("주문량").setCellRenderer(celAlignCenter);
 		tableStockOrder.setRowHeight(25);//테이블 행 높이
 	// 테이블 배경색/ 헤더배경색,폰트,글씨크기/ 선택한 행 색 변경
-		tableStock.setBackground(new Color(250, 250, 250));
-		tableStock.getTableHeader().setBackground(new Color(250, 250, 250));
-		tableStock.setSelectionBackground(Color.ORANGE); 
+		tableStock.setBackground(new Color(255, 255, 255));
+		tableStock.setSelectionBackground(new Color(255, 195, 0)); 
 		tableStock.getTableHeader().setFont((new Font("", Font.BOLD, 20)));
 		tableStock.getTableHeader().setReorderingAllowed(false); // 컬럼이동 불가 
 		tableStock.getTableHeader().setResizingAllowed(false); // 컬럼크기 조절 불가
 
-		tableStockOrder.setBackground(new Color(250, 250, 250));
-		tableStockOrder.getTableHeader().setBackground(new Color(250, 250, 250));
-		tableStockOrder.setSelectionBackground(Color.ORANGE); 
+		tableStockOrder.setBackground(new Color(255, 255, 255));
+		tableStockOrder.setSelectionBackground(new Color(255, 195, 0)); 
 		tableStockOrder.getTableHeader().setFont((new Font("", Font.BOLD, 20)));
 		tableStockOrder.getTableHeader().setReorderingAllowed(false); // 컬럼이동 불가 
 		tableStockOrder.getTableHeader().setResizingAllowed(false); // 컬럼크기 조절 불가
 // 화면구성
+		//화면 위치 -위쪽
+		JPanel p_north = new JPanel();
+		p_north.add(laNothing);
+		p_north.add(laChickenStore);
+		p_north.add(laTel);
 		// 화면 위치 -왼쪽
 		JPanel p_west = new JPanel(new BorderLayout());
         JPanel p_west_west = new JPanel();
@@ -147,7 +153,7 @@ public class StockView extends JPanel implements ActionListener {
 		p_west_south.add(tfSearchMenu);
 		p_west_south.add(bSearchMenu);
 		p_west.add(p_west_west, BorderLayout.WEST);
-		p_west.add(laStockInfo, BorderLayout.NORTH);
+		//p_west.add(laStockInfo, BorderLayout.NORTH);
 		p_west.add(new JScrollPane(tableStock), BorderLayout.CENTER);
 		p_west.add(p_west_south, BorderLayout.SOUTH);
 
@@ -156,11 +162,12 @@ public class StockView extends JPanel implements ActionListener {
 		JPanel p_east_south = new JPanel();// 버튼붙일 패널
 		p_east_south.add(bPayment);
 		p_east_south.add(bCancel);
+		p_east_south.add(bLogOut);
 		JPanel p_east_east = new JPanel();
 		for (int i = 0; i < 5; i++) {
 			p_east_east.add(new JLabel(""));
 		}
-		p_east.add(laStockOrderInfo, BorderLayout.NORTH);
+		//p_east.add(laStockOrderInfo, BorderLayout.NORTH);
 		p_east.add(new JScrollPane(tableStockOrder), BorderLayout.CENTER);
 		p_east.add(p_east_south, BorderLayout.SOUTH);
 		p_east.add(p_east_east, BorderLayout.EAST);
@@ -180,19 +187,21 @@ public class StockView extends JPanel implements ActionListener {
 
 		
 	//화면 컬러
-		p_west.setBackground(Color.ORANGE);
-		p_west_west.setBackground(Color.ORANGE);
-		p_west_south.setBackground(Color.ORANGE);
-		p_east.setBackground(Color.ORANGE);
-		p_east_south.setBackground(Color.ORANGE);
-		p_east_east.setBackground(Color.ORANGE);
-		p_center.setBackground(Color.ORANGE);
-		p_center_center.setBackground(Color.ORANGE);
-		p_center_center_center.setBackground(Color.ORANGE);
+		p_north.setBackground(Color.WHITE);
+		p_west.setBackground(Color.WHITE);
+		p_west_west.setBackground(Color.WHITE);
+		p_west_south.setBackground(Color.WHITE);
+		p_east.setBackground(Color.WHITE);
+		p_east_south.setBackground(Color.WHITE);
+		p_east_east.setBackground(Color.WHITE);
+		p_center.setBackground(Color.WHITE);
+		p_center_center.setBackground(Color.WHITE);
+		p_center_center_center.setBackground(Color.WHITE);
 		
 		
 		//화면
 		setLayout(new BorderLayout());
+		add(p_north, BorderLayout.NORTH);
 		add(p_west, BorderLayout.WEST); // 라벨,테이블
 		add(p_center, BorderLayout.CENTER);// 가운데에 +/-버튼
 		add(p_east, BorderLayout.EAST); // 라벨,테이블,버튼2개

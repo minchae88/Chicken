@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,23 +18,25 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+
+import org.jfree.util.ExtendedConfigurationWrapper;
 
 import model.OrderModel;
 
 public class OrderDialog extends JDialog implements ActionListener {
 
-	JLabel title, orderNum, menuList, totalPrice;
-	JButton modify, cancle, payment;
+	JLabel title, orderNum, totalPrice;
+	JButton cancel, payment, delete;
 	JTextField orderField, priceField;
-	JButton plus = new JButton("+");
-	JButton minus = new JButton("-");
+	JButton plus, minus;
+	
 	JTable tableOrderList;
 	DefaultTableModel tableModel;
 	Vector columnNames = new Vector();
 
 	OrderView parents;
-
 	OrderModel model;
 
 	// public OrderDialog(JTable tableOrderList) {
@@ -61,29 +64,42 @@ public class OrderDialog extends JDialog implements ActionListener {
 	}
 
 	public void addLayout() {
+
+        
+    	plus = new JButton(getIcon("bAdd", 40, 40));
+		plus.setBorderPainted(false);// 버튼 테두리 설정, false는 없앰
+		plus.setContentAreaFilled(false);// 버튼 영역 배경 표시 설정, false는 없앰
+
+		minus = new JButton(getIcon("bMinus", 40, 40));
+		minus.setBorderPainted(false);
+		minus.setContentAreaFilled(false);
+
 		columnNames.add("주문번호");
 		columnNames.add("메뉴명");
 		columnNames.add("수량");
 		columnNames.add("가격");
+		
 		tableModel = new DefaultTableModel(parents.data, columnNames);
 		tableOrderList = new JTable(tableModel);
+		tableOrderList.setSelectionBackground(new Color(255, 195, 0)); 
 		setSize(500, 500);
 
 		title = new JLabel(getIcon("laMenuCheck", 200, 50));
-		orderNum = new JLabel(getIcon("bOrderNum", 100, 30));
 
-		menuList = new JLabel(getIcon("menuList", 100, 30));
-		totalPrice = new JLabel(getIcon("bTotal", 100, 30));
-
-		modify = new JButton(getIcon("bModify", 60, 30));
-		modify.setBorderPainted(false);
-		modify.setContentAreaFilled(false);
-		cancle = new JButton(getIcon("bCancel", 60, 30));
-		cancle.setBorderPainted(false);
-		cancle.setContentAreaFilled(false);
-		payment = new JButton(getIcon("bPay", 60, 30));
+		orderNum = new JLabel(getIcon("bOrderNum", 80, 30));
+		totalPrice = new JLabel(getIcon("bTotal", 80, 30));
+		
+		payment = new JButton(getIcon("bPay", 100, 40));
 		payment.setBorderPainted(false);
 		payment.setContentAreaFilled(false);
+		delete = new JButton("Delete");
+//		delete.setBorderPainted(false);
+//		delete.setContentAreaFilled(false);
+		cancel = new JButton(getIcon("bCancel", 100, 40));
+		cancel.setBorderPainted(false);
+		cancel.setContentAreaFilled(false);
+		
+		
 		orderField = new JTextField();
 		priceField = new JTextField();
 
@@ -123,17 +139,18 @@ public class OrderDialog extends JDialog implements ActionListener {
 		}
 
 		JPanel p_south = new JPanel();
-		p_south.add(modify);
-		p_south.add(cancle);
 		p_south.add(payment);
-
-		// 컬러
-		p_north.setBackground(Color.ORANGE);
-		p_center.setBackground(Color.ORANGE);
-		p_center_north.setBackground(Color.ORANGE);
-		p_center_center.setBackground(Color.ORANGE);
-		p_center_south.setBackground(Color.ORANGE);
-		p_south.setBackground(Color.ORANGE);
+		p_south.add(delete);
+		p_south.add(cancel);
+//컬러		
+	    p_north.setBackground(Color.WHITE);
+	    p_center.setBackground(Color.WHITE);
+	    p_center_east.setBackground(Color.WHITE);
+	    p_center_north.setBackground(Color.WHITE);
+	    p_center_center.setBackground(Color.WHITE);
+	    p_center_south.setBackground(Color.WHITE);
+	    p_south.setBackground(Color.WHITE);
+		
 
 		setLayout(new BorderLayout());
 		p_center.add(p_center_north, BorderLayout.NORTH);
@@ -151,9 +168,9 @@ public class OrderDialog extends JDialog implements ActionListener {
 	public void eventProc() {
 		plus.addActionListener(this);
 		minus.addActionListener(this);
-		cancle.addActionListener(this);
+		cancel.addActionListener(this);
 		payment.addActionListener(this);
-
+		delete.addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -164,20 +181,21 @@ public class OrderDialog extends JDialog implements ActionListener {
 		} else if (minus == evt) {
 			menuMinus();
 			setTotalPrice();
-		} else if (cancle == evt) {
-			int selectedRow = tableOrderList.getSelectedRow();
-			if(selectedRow == -1) {
-				setVisible(false);
-				return;
-			}
-			tableModel.removeRow(selectedRow);
-			setTotalPrice();
-			
+
+		} else if (cancel == evt) {
+			parents.tableModel.fireTableDataChanged();
+			setVisible(false);
 		} else if (payment == evt) {
 			if (insertOrderList() == 0) {
 				parents.tableModel.setNumRows(0);
 				parents.tableModel.fireTableDataChanged();
 				this.dispose();
+			}
+		} else if(delete == evt) {
+			int selectedRow = tableOrderList.getSelectedRow();
+			if(selectedRow != -1) {
+				tableModel.removeRow(selectedRow);
+				setTotalPrice();
 			}
 		}
 	}
@@ -195,7 +213,6 @@ public class OrderDialog extends JDialog implements ActionListener {
 			int changePrice = price * changeNum;
 			tableOrderList.setValueAt(changePrice, row, 3);
 		}
-
 	}
 
 	public void menuMinus() {
