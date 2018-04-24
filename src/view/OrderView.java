@@ -108,6 +108,7 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		bLogOut.setBorder(emptyBorder);
 		bLogOut.setBorderPainted(false);
 		bLogOut.setContentAreaFilled(false);
+		bLogOut.setEnabled(false);
 
 		//  테이블의 제목 생성
 
@@ -305,7 +306,7 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 				moveTable(i);
 			}	
 		} if (evt == bLogOut) {
-			logout(false);
+			logout();
 
 		}
 
@@ -346,12 +347,12 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 
 	}
 
-	public void logout(boolean flag) {
+	public void logout() {
 
 		int num = JOptionPane.showConfirmDialog(null, "로그아웃 하시겠습니까?");
 		if (num == 0) {
 			parents.Visible(false);
-			bLogOut.setEnabled(flag);
+			bLogOut.setEnabled(false);
 		}	    
 	}
 
