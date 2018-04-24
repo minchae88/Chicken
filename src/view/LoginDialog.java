@@ -51,7 +51,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 
 	  public void addLayout() {
 		  
-		    title = new JLabel(getIcon("laLogin", 200, 40));
+		    title = new JLabel(getIcon("laLogin", 200, 50));
 		    userImage = new JLabel(getIcon("laUserImage", 25, 25));
 		    passImage = new JLabel(getIcon("laPassImage", 25, 25));
 		    

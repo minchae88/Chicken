@@ -43,11 +43,11 @@ public class ChickenStore extends JFrame {
 //    pane.setBorder(new EmptyBorder(0, 0, 0, 0));
 //      
     //2.탭의 배경색, 탭의 글씨색  
-      pane.setBackgroundAt(0, Color.ORANGE);//탭의 배경색
+      pane.setBackgroundAt(0, new Color(255, 129, 0));//탭의 배경색
       pane.setForegroundAt(0, Color.BLACK);//탭의 색
-      pane.setBackgroundAt(1, Color.ORANGE);
+      pane.setBackgroundAt(1, new Color(255, 129, 0));
       pane.setForegroundAt(1, Color.BLACK);
-      pane.setBackgroundAt(2, Color.ORANGE);
+      pane.setBackgroundAt(2, new Color(255, 129, 0));
       pane.setForegroundAt(2, Color.BLACK);
       // 탭 화면의 최초화면을 인덱스로 지정
       pane.setSelectedIndex(0);

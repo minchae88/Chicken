@@ -29,7 +29,7 @@ import model.OrderModel;
 
 public class OrderDialog extends JDialog implements ActionListener {
 
-	JLabel title, orderNum, menuList, totalPrice;
+	JLabel title, orderNum, totalPrice;
 	JButton cancel, payment;
 	JTextField orderField, priceField;
 	JButton plus, minus;
@@ -67,11 +67,11 @@ public class OrderDialog extends JDialog implements ActionListener {
 
 	public void addLayout() {
         
-    	plus = new JButton(getIcon("bAdd", 30, 30));
+    	plus = new JButton(getIcon("bAdd", 40, 40));
 		plus.setBorderPainted(false);// 버튼 테두리 설정, false는 없앰
 		plus.setContentAreaFilled(false);// 버튼 영역 배경 표시 설정, false는 없앰
 
-		minus = new JButton(getIcon("bMinus", 30, 30));
+		minus = new JButton(getIcon("bMinus", 40, 40));
 		minus.setBorderPainted(false);
 		minus.setContentAreaFilled(false);
 
@@ -81,17 +81,17 @@ public class OrderDialog extends JDialog implements ActionListener {
 		columnNames.add("가격");
 		tableModel = new DefaultTableModel(parents.data, columnNames);
 		tableOrderList = new JTable(tableModel);
+		tableOrderList.setSelectionBackground(new Color(255, 195, 0)); 
 		setSize(500, 500);
 
 		title = new JLabel(getIcon("laMenuCheck", 200, 50));
-		orderNum = new JLabel(getIcon("bOrderNum", 100, 30));
-		menuList = new JLabel(getIcon("menuList", 100, 30));
-		totalPrice = new JLabel(getIcon("bTotal", 100, 30));
+		orderNum = new JLabel(getIcon("bOrderNum", 80, 30));
+		totalPrice = new JLabel(getIcon("bTotal", 80, 30));
 		
-		payment = new JButton(getIcon("bPay", 60, 30));
+		payment = new JButton(getIcon("bPay", 100, 40));
 		payment.setBorderPainted(false);
 		payment.setContentAreaFilled(false);
-		cancel = new JButton(getIcon("bCancel", 60, 30));
+		cancel = new JButton(getIcon("bCancel", 100, 40));
 		cancel.setBorderPainted(false);
 		cancel.setContentAreaFilled(false);
 		

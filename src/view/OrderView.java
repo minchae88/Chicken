@@ -89,17 +89,17 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 //btn[i] = new JButton("<html>"+strMenu[i] +"<br/>" + "<font color='red'>"+menuPrice[i]+"</font>" + "</html>", imageIcon[i]);
 		}
 		
-		bStoreManagement = new JButton(getIcon("bStoreManagement", 130, 50));
+		bStoreManagement = new JButton(getIcon("bStoreManagement", 100, 40));
 		bStoreManagement.setBorder(emptyBorder);
 		bStoreManagement.setBorderPainted(false);
 		bStoreManagement.setContentAreaFilled(false);
 
-		bCancel = new JButton(getIcon("bCancel", 130, 50));
+		bCancel = new JButton(getIcon("bCancel", 100, 40));
 		bCancel.setBorder(emptyBorder);
 		bCancel.setBorderPainted(false);
 		bCancel.setContentAreaFilled(false);
 
-		bLogOut= new JButton(getIcon("bLogOut", 130, 50));
+		bLogOut= new JButton(getIcon("bLogOut",100, 40));
 		bLogOut.setBorder(emptyBorder);
 		bLogOut.setBorderPainted(false);
 		bLogOut.setContentAreaFilled(false);
@@ -119,11 +119,13 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		// DefaultTableModel 붙이기
 		tableOrderList = new JTable(tableModel);
 		tableOrderList.setEnabled(true);
-		tableOrderList.setBackground(new Color(250, 250, 250));
-		tableOrderList.getTableHeader().setBackground(new Color(250, 250, 250));
+		tableOrderList.setBackground(new Color(255, 255, 255));
+		tableOrderList.setSelectionBackground(new Color(255, 195, 0)); 
+
   //테이블정렬	
 		DefaultTableCellRenderer cellAlignCenter = new DefaultTableCellRenderer();
 		cellAlignCenter.setHorizontalAlignment(JLabel.CENTER);
+	
 		TableColumnModel tcmTable = tableOrderList.getColumnModel();
 		for(int i=0; i< tcmTable.getColumnCount();i++){
 			tcmTable.getColumn(i).setCellRenderer(cellAlignCenter);
@@ -181,9 +183,9 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		// 오른쪽 아래 영역
 		JPanel p_east_south = new JPanel();
 		p_east_south.add(bStoreManagement);
-		p_east_south.add(bLogOut);
 		p_east_south.add(bCancel);
-
+		p_east_south.add(bLogOut);
+		
 		// 오른쪽의 오른쪽 영역
 		JPanel p_east_east = new JPanel(new GridLayout(1,10));
 		for(int i=0; i<10; i++) {

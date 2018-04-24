@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.border.Border;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -50,9 +51,10 @@ public class SalesView extends JPanel implements ActionListener {
 
 	JComboBox<String> comboBox = new JComboBox<>();
 
-	JButton show = new JButton(getIcon("bSearch", 80, 40));
-	JButton init = new JButton(getIcon("bReset", 80, 40));
-	
+	JButton show;
+	JButton init;
+	JButton bLogOut;
+
 	JLabel laChickenStore = new JLabel(getIcon("laChickenStore", 350, 100));
 	JLabel laTel= new JLabel(getIcon("laTel", 200, 60));
 	JLabel laNothing =  new JLabel(getIcon("laNothing", 250, 80));
@@ -60,6 +62,8 @@ public class SalesView extends JPanel implements ActionListener {
 	BorderFactory factory;
 	ChartPanel panel;
 
+	Border emptyBorder = BorderFactory.createEmptyBorder();
+	
 	public SalesView(int width, int height) {
 		this.width = (int) (width * 0.9);
 		this.height = (int) (height * 0.9);
@@ -75,6 +79,18 @@ public class SalesView extends JPanel implements ActionListener {
 
 	private void addLayout() {
 		
+		show = new JButton(getIcon("bSearch", 100, 40));
+		show.setBorder(emptyBorder);
+		show.setBorderPainted(false);
+		show.setContentAreaFilled(false);
+		init= new JButton(getIcon("bReset", 100, 40));
+		init.setBorder(emptyBorder);
+		init.setBorderPainted(false);
+		init.setContentAreaFilled(false);
+		bLogOut = new JButton(getIcon("bLogOut",100,40));
+		bLogOut.setBorder(emptyBorder);
+		bLogOut.setBorderPainted(false);
+		bLogOut.setContentAreaFilled(false);
 		//north
 		JPanel p_north = new JPanel();
 		p_north.setLayout(new GridLayout(1, 3));
@@ -135,6 +151,7 @@ public class SalesView extends JPanel implements ActionListener {
 		p_center_lower.add(endDate);
 		p_center_lower.add(show);
 		p_center_lower.add(init);
+		p_center_lower.add(bLogOut);
 		p_center.add(p_center_upper);
 		p_center.add(p_center_lower);
 
