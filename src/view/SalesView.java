@@ -14,7 +14,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -25,11 +24,10 @@ import org.jfree.chart.ChartPanel;
 
 import chart.Chart;
 import chart.DateLabelFormatter;
-import model.SalesModel;
 
 public class SalesView extends JPanel implements ActionListener {
 	int width, height;
-  
+
 	JRadioButton rbMenu = new JRadioButton("메뉴별");
 	JRadioButton rbDate = new JRadioButton("날짜별");
 	JRadioButton rbDaily = new JRadioButton("일별");
@@ -37,7 +35,7 @@ public class SalesView extends JPanel implements ActionListener {
 
 	ButtonGroup group1 = new ButtonGroup();
 	ButtonGroup group2 = new ButtonGroup();
-	
+
 	UtilDateModel startModel = new UtilDateModel();
 	UtilDateModel endModel = new UtilDateModel();
 	Properties p = new Properties();
@@ -59,7 +57,7 @@ public class SalesView extends JPanel implements ActionListener {
 		addLayout();
 		eventProc();
 	}
-        
+
 	// 이미지 사이즈 조절하는 메소드당당당
 	public ImageIcon getIcon(String name, int width, int height) {
 		return new ImageIcon(new ImageIcon("src\\view\\chickimg\\" + name + ".png").getImage().getScaledInstance(width,
@@ -85,13 +83,13 @@ public class SalesView extends JPanel implements ActionListener {
 		rbDaily.setVisible(false);
 		p_north_upper.add(rbMonthly);
 		rbMonthly.setVisible(false);
-		
-		//combobox
+
+		// combobox
 		comboBox.addItem("BarChart");
 		comboBox.addItem("LineChart");
 		p_north_upper.add(comboBox);
-		
-		//button
+
+		// button
 		JPanel p_north_lower = new JPanel();
 		show.setContentAreaFilled(false);
 		show.setBorder(BorderFactory.createEmptyBorder());
@@ -99,18 +97,23 @@ public class SalesView extends JPanel implements ActionListener {
 		init.setContentAreaFilled(false);
 		init.setBorder(BorderFactory.createEmptyBorder());
 		init.setBorderPainted(false);
-		
-		//calendar
+
+		// calendar
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
 		p.put("text.year", "Year");
+
+		startModel.setDate(2017, 3, 1);
+		endModel.setDate(2017, 3, 15);
 		
 		startDatePanel = new JDatePanelImpl(startModel, p);
-		
 		endDatePanel = new JDatePanelImpl(endModel, p);
-		
+
 		startDate = new JDatePickerImpl(startDatePanel, new DateLabelFormatter());
-		endDate =  new JDatePickerImpl(endDatePanel, new DateLabelFormatter());
+		endDate = new JDatePickerImpl(endDatePanel, new DateLabelFormatter());
+		
+		startModel.setSelected(true);
+		endModel.setSelected(true);
 		p_north_lower.add(startDate);
 		p_north_lower.add(endDate);
 		p_north_lower.add(show);
@@ -118,22 +121,22 @@ public class SalesView extends JPanel implements ActionListener {
 
 		p_north.add(p_north_upper);
 		p_north.add(p_north_lower);
-		
+
 		// center
 		JPanel p_center = new JPanel(new BorderLayout());
 		JButton salesInfo = new JButton(getIcon("laSalesInfo", 120, 60));
 		salesInfo.setBorderPainted(false);
 		salesInfo.setContentAreaFilled(false);
-		
+
 		p_center.add(salesInfo, BorderLayout.WEST);
 
 		// south
 		JPanel p_south = new JPanel();
 		panel = new ChartPanel(null);
 		p_south.add(panel);
-        
-		//color
-		
+
+		// color
+
 		p_north.setBackground(Color.ORANGE);
 		p_north_upper.setBackground(Color.ORANGE);
 		p_north_lower.setBackground(Color.ORANGE);
@@ -144,13 +147,13 @@ public class SalesView extends JPanel implements ActionListener {
 		p_center.setBackground(Color.ORANGE);
 		p_south.setBackground(Color.ORANGE);
 		panel.setBackground(Color.ORANGE);
-		
+
 		rbDate.setBackground(Color.ORANGE);
 		rbMenu.setBackground(Color.ORANGE);
 		rbDaily.setBackground(Color.ORANGE);
 		rbMonthly.setBackground(Color.ORANGE);
 		comboBox.setBackground(Color.ORANGE);
-		
+
 		// size
 		p_north_upper.setPreferredSize(new Dimension(width, (int) (height * 0.07)));
 		p_north_lower.setPreferredSize(new Dimension(width, (int) (height * 0.09)));
@@ -183,8 +186,10 @@ public class SalesView extends JPanel implements ActionListener {
 			rbDaily.setVisible(true);
 			rbMonthly.setVisible(true);
 		} else if (evt == show) {
-			String[] infom = {group1.getSelection().getActionCommand(), group2.getSelection().getActionCommand(), (String) comboBox.getSelectedItem()};
-			panel.setChart(new Chart().getChart(infom, (Date)startDate.getModel().getValue(), (Date)endDate.getModel().getValue()));
+			String[] infom = { group1.getSelection().getActionCommand(), group2.getSelection().getActionCommand(),
+					(String) comboBox.getSelectedItem() };
+			panel.setChart(new Chart().getChart(infom, (Date) startDate.getModel().getValue(),
+					(Date) endDate.getModel().getValue()));
 		} else if (evt == init) {
 			group1.clearSelection();
 			group2.clearSelection();
