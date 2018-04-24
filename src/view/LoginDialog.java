@@ -38,6 +38,8 @@ public class LoginDialog extends JDialog implements ActionListener {
 	  
 	  public LoginDialog(ChickenStore parent) throws Exception {
 	    this.parent = parent;
+	    setTitle("Manager Login Dialog");
+	    setLocationRelativeTo(null);// 창 화면 정가운데 뜨게
 	    order = parent.getOrderView();
 	    addLayout(); 
 	    eventProc(); 

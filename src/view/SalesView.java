@@ -58,7 +58,7 @@ public class SalesView extends JPanel implements ActionListener {
 
 	JLabel laChickenStore = new JLabel(getIcon("laChickenStore", 350, 100));
 	JLabel laTel = new JLabel(getIcon("laTel", 200, 60));
-	JLabel laNothing = new JLabel(getIcon("laNothing", 250, 80));
+	JLabel laNothing = new JLabel(getIcon("laNothing", 200, 60));
 
 	BorderFactory factory;
 	ChartPanel panel;
@@ -96,19 +96,19 @@ public class SalesView extends JPanel implements ActionListener {
 		bLogOut.setBorder(emptyBorder);
 		bLogOut.setBorderPainted(false);
 		bLogOut.setContentAreaFilled(false);
-		// north
+// north
 		JPanel p_north = new JPanel();
 		p_north.setLayout(new GridLayout(1, 3));
 		p_north.add(laNothing);
 		p_north.add(laChickenStore);
 		p_north.add(laTel);
 
-		// center
+	// center
 		JPanel p_south = new JPanel();
 		panel = new ChartPanel(new Chart().getChart(new String[] {"Menu", "Daily", "BarChart"}, new Date(), new Date()));
 		p_south.add(panel);
 
-		// south
+	// south
 		JPanel p_center = new JPanel();
 		// radio button
 		JPanel p_center_upper = new JPanel();
@@ -241,14 +241,11 @@ public class SalesView extends JPanel implements ActionListener {
 	}
 	
 	public void logout() {
-
 		int num = JOptionPane.showConfirmDialog(null, "로그아웃 하시겠습니까?");
 		if (num == 0) {
-			
 			parents.Visible(false);
 			parents.setTabIndex(0);
 			order.bLogOut.setEnabled(false);
-
 		}	    
 	}
 

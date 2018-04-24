@@ -97,7 +97,7 @@ public class StockView extends JPanel implements ActionListener {
 		// 2. 텍스트필드설정
 		tfSearchMenu = new JTextField(15);
 		// 3.라벨설정
-		laNothing = new JLabel(getIcon("laNothing", 250, 80));
+		laNothing = new JLabel(getIcon("laNothing", 200, 60));
 		laChickenStore = new JLabel(getIcon("laChickenStore", 350, 100));
 		laTel= new JLabel(getIcon("laTel", 200, 60));
 
@@ -140,6 +140,7 @@ public class StockView extends JPanel implements ActionListener {
 // 화면구성
 		//화면 위치 -위쪽
 		JPanel p_north = new JPanel();
+		p_north.setLayout(new GridLayout(1,3));
 		p_north.add(laNothing);
 		p_north.add(laChickenStore);
 		p_north.add(laTel);
@@ -314,7 +315,7 @@ public class StockView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent ev) {
 		Object evt = ev.getSource();
 		if (evt == bPayment) {
-			JOptionPane.showMessageDialog(null, "재고 주문이 완료되었습니다");
+			JOptionPane.showMessageDialog(null, "주문이 완료되었습니다");
 	// 테이블에서 모든 행을 스캔, 행의 첫번재 컬럼값은 메뉴, 두번째 컬럼값은 주문량 /addstock 함수에 호출
 			try {
 				for (int i = 0; i < tbModelStockOrder.data.size(); i++) {
@@ -329,7 +330,7 @@ public class StockView extends JPanel implements ActionListener {
 				e.printStackTrace();
 			}
 		} else if (evt == bCancel) {
-			JOptionPane.showMessageDialog(null, "재고 주문이 취소되었습니다");
+			JOptionPane.showMessageDialog(null, "주문이 취소되었습니다");
 			bCancelDelete();
 		} else if (evt == bAdd) { // +버튼 눌렀을때
 			try {
@@ -405,14 +406,11 @@ public class StockView extends JPanel implements ActionListener {
 	}
 	
 	public void logout() {
-
-		int num = JOptionPane.showConfirmDialog(null, "로그아웃 하시겠습니까?");
+	    int num = JOptionPane.showConfirmDialog(null, "로그아웃 하시겠습니까?");
 		if (num == 0) {
-			
 			parents.Visible(false);
 			parents.setTabIndex(0);
 			order.bLogOut.setEnabled(false);
-
 		}	    
 	}
 
