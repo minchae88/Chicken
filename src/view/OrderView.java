@@ -28,9 +28,8 @@ import javax.swing.table.TableColumnModel;
 import main.ChickenStore;
 import model.OrderModel;
 
+// 수정본
 public class OrderView extends JPanel implements ActionListener, MouseListener {
-
-
 
 	JLabel orderList, laNothing, laChickenStore, laTel ; // 왼쪽, 오른쪽의 제목
 	JButton bStoreManagement, bCancel, bLogOut; // 매장 관리 버튼
