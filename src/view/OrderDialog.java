@@ -1,7 +1,11 @@
 package view;
 
 import java.awt.BorderLayout;
+
 import java.awt.Dimension;
+
+import java.awt.Color;
+
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -62,6 +66,7 @@ public class OrderDialog extends JDialog implements ActionListener {
 
 	public void addLayout() {
 
+
 		columnNames.add("주문번호");
 		columnNames.add("메뉴명");
 		columnNames.add("수량");
@@ -70,17 +75,22 @@ public class OrderDialog extends JDialog implements ActionListener {
 		tableOrderList = new JTable(tableModel);
 		setSize(500, 500);
 
-		title = new JLabel(getIcon("menuTitle", 200, 50));
-		orderNum = new JLabel(getIcon("orderNum", 100, 30));
+
+		
+		title = new JLabel(getIcon("laMenuCheck", 200, 50));
+		orderNum = new JLabel(getIcon("bOrderNum", 100, 30));
+		
+
 		menuList = new JLabel(getIcon("menuList", 100, 30));
-		totalPrice = new JLabel(getIcon("totalPrice", 100, 30));
-		modify = new JButton(getIcon("modify", 60, 30));
+		totalPrice = new JLabel(getIcon("bTotal", 100, 30));
+		
+		modify = new JButton(getIcon("bModify", 60, 30));
 		modify.setBorderPainted(false);
 		modify.setContentAreaFilled(false);
-		cancle = new JButton(getIcon("cancle2", 60, 30));
+		cancle = new JButton(getIcon("bCancel", 60, 30));
 		cancle.setBorderPainted(false);
 		cancle.setContentAreaFilled(false);
-		payment = new JButton(getIcon("payment", 60, 30));
+		payment = new JButton(getIcon("bPay", 60, 30));
 		payment.setBorderPainted(false);
 		payment.setContentAreaFilled(false);
 		orderField = new JTextField();
@@ -125,6 +135,19 @@ public class OrderDialog extends JDialog implements ActionListener {
 		p_south.add(modify);
 		p_south.add(cancle);
 		p_south.add(payment);
+
+
+
+	
+//컬러		
+	    p_north.setBackground(Color.ORANGE);
+	    p_center.setBackground(Color.ORANGE);
+	    p_center_north.setBackground(Color.ORANGE);
+	    p_center_center.setBackground(Color.ORANGE);
+	    p_center_south.setBackground(Color.ORANGE);
+	    p_south.setBackground(Color.ORANGE);
+		
+		
 
 		setLayout(new BorderLayout());
 		p_center.add(p_center_north, BorderLayout.NORTH);

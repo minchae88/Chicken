@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -27,7 +29,7 @@ import model.SalesModel;
 
 public class SalesView extends JPanel implements ActionListener {
 	int width, height;
-
+  
 	JRadioButton rbMenu = new JRadioButton("메뉴별");
 	JRadioButton rbDate = new JRadioButton("날짜별");
 	JRadioButton rbDaily = new JRadioButton("일별");
@@ -46,8 +48,9 @@ public class SalesView extends JPanel implements ActionListener {
 
 	JComboBox<String> comboBox = new JComboBox<>();
 
-	JButton show = new JButton(getIcon("show", 80, 40));
-	JButton init = new JButton(getIcon("init", 80, 40));
+	JButton show = new JButton(getIcon("bSearch", 80, 40));
+	
+	JButton init = new JButton(getIcon("bReset", 80, 40));
 
 	BorderFactory factory;
 
@@ -69,7 +72,6 @@ public class SalesView extends JPanel implements ActionListener {
 	private void addLayout() {
 		// north
 		JPanel p_north = new JPanel();
-		
 		// radio button
 		JPanel p_north_upper = new JPanel();
 		rbDate.setActionCommand("Date");
@@ -86,7 +88,7 @@ public class SalesView extends JPanel implements ActionListener {
 		rbDaily.setVisible(false);
 		p_north_upper.add(rbMonthly);
 		rbMonthly.setVisible(false);
-
+		
 		//combobox
 		comboBox.addItem("BarChart");
 		comboBox.addItem("LineChart");
@@ -94,11 +96,12 @@ public class SalesView extends JPanel implements ActionListener {
 		
 		//button
 		JPanel p_north_lower = new JPanel();
-		
 		show.setContentAreaFilled(false);
 		show.setBorder(BorderFactory.createEmptyBorder());
+		show.setBorderPainted(false);
 		init.setContentAreaFilled(false);
 		init.setBorder(BorderFactory.createEmptyBorder());
+		init.setBorderPainted(false);
 		
 		//calendar
 		p.put("text.today", "Today");
@@ -106,7 +109,9 @@ public class SalesView extends JPanel implements ActionListener {
 		p.put("text.year", "Year");
 		
 		startDatePanel = new JDatePanelImpl(startModel, p);
+		
 		endDatePanel = new JDatePanelImpl(endModel, p);
+		
 		startDate = new JDatePickerImpl(startDatePanel, new DateLabelFormatter());
 		endDate =  new JDatePickerImpl(endDatePanel, new DateLabelFormatter());
 		p_north_lower.add(startDate);
@@ -119,16 +124,36 @@ public class SalesView extends JPanel implements ActionListener {
 		
 		// center
 		JPanel p_center = new JPanel(new BorderLayout());
-		JButton salesInfo = new JButton(getIcon("salesinfo", 80, 45));
+		JButton salesInfo = new JButton(getIcon("laSalesInfo", 120, 60));
+		salesInfo.setBorderPainted(false);
 		salesInfo.setContentAreaFilled(false);
-		salesInfo.setBorder(BorderFactory.createEmptyBorder());
+		
 		p_center.add(salesInfo, BorderLayout.WEST);
 
 		// south
 		JPanel p_south = new JPanel();
 		panel = new ChartPanel(null);
 		p_south.add(panel);
-
+        
+		//color
+		
+		p_north.setBackground(Color.ORANGE);
+		p_north_upper.setBackground(Color.ORANGE);
+		p_north_lower.setBackground(Color.ORANGE);
+		startDatePanel.setBackground(Color.ORANGE);
+		endDatePanel.setBackground(Color.ORANGE);
+		startDate.setBackground(Color.ORANGE);
+		endDate.setBackground(Color.ORANGE);
+		p_center.setBackground(Color.ORANGE);
+		p_south.setBackground(Color.ORANGE);
+		panel.setBackground(Color.ORANGE);
+		
+		rbDate.setBackground(Color.ORANGE);
+		rbMenu.setBackground(Color.ORANGE);
+		rbDaily.setBackground(Color.ORANGE);
+		rbMonthly.setBackground(Color.ORANGE);
+		comboBox.setBackground(Color.ORANGE);
+		
 		// size
 		p_north_upper.setPreferredSize(new Dimension(width, (int) (height * 0.07)));
 		p_north_lower.setPreferredSize(new Dimension(width, (int) (height * 0.09)));
@@ -142,7 +167,6 @@ public class SalesView extends JPanel implements ActionListener {
 		add(p_north, BorderLayout.NORTH);
 		add(p_center, BorderLayout.CENTER);
 		add(p_south, BorderLayout.SOUTH);
-
 	}
 
 	private void eventProc() {

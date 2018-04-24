@@ -47,7 +47,16 @@ public class StockModel {
    	 	    ps.close(); 
 	    return info;
 	}
-	
+   //결제버튼 누르면 재고주문내역의 주문량대로 db의 메뉴 테이블 재고량이 증가 된다.
+	public void addStock(String menu, int orderCount) throws Exception{
+	     String sql="UPDATE menu SET stock = stock+? WHERE menu=?"; 
+		 PreparedStatement ps = con.prepareStatement(sql);
+		 ps.setInt(1, orderCount);
+		 ps.setString(2,menu);
+		 ps.executeUpdate();
+		 ps.close();
+				  
+	}
 
 
 	
