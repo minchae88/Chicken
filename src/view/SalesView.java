@@ -3,6 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,11 +50,13 @@ public class SalesView extends JPanel implements ActionListener {
 	JComboBox<String> comboBox = new JComboBox<>();
 
 	JButton show = new JButton(getIcon("bSearch", 80, 40));
-	
 	JButton init = new JButton(getIcon("bReset", 80, 40));
-
+	
+	JLabel laChickenStore = new JLabel(getIcon("laChickenStore", 350, 100));
+	JLabel laTel= new JLabel(getIcon("laTel", 200, 60));
+	JLabel laNothing =  new JLabel(getIcon("laNothing", 250, 80));
+	
 	BorderFactory factory;
-
 	ChartPanel panel;
 
 	public SalesView(int width, int height) {
@@ -70,10 +73,23 @@ public class SalesView extends JPanel implements ActionListener {
 	}
 
 	private void addLayout() {
-		// north
+		
+		//north
 		JPanel p_north = new JPanel();
+		p_north.setLayout(new GridLayout(1, 3));
+		p_north.add(laNothing);
+		p_north.add(laChickenStore);
+		p_north.add(laTel);		
+
+		// center
+		JPanel p_south = new JPanel();
+		panel = new ChartPanel(null);
+		p_south.add(panel);
+		
+		// south
+		JPanel p_center = new JPanel();
 		// radio button
-		JPanel p_north_upper = new JPanel();
+		JPanel p_center_upper = new JPanel();
 		rbDate.setActionCommand("Date");
 		rbMenu.setActionCommand("Menu");
 		rbDaily.setActionCommand("Daily");
@@ -82,20 +98,20 @@ public class SalesView extends JPanel implements ActionListener {
 		group1.add(rbDate);
 		group2.add(rbDaily);
 		group2.add(rbMonthly);
-		p_north_upper.add(rbMenu);
-		p_north_upper.add(rbDate);
-		p_north_upper.add(rbDaily);
+		p_center_upper.add(rbMenu);
+		p_center_upper.add(rbDate);
+		p_center_upper.add(rbDaily);
 		rbDaily.setVisible(false);
-		p_north_upper.add(rbMonthly);
+		p_center_upper.add(rbMonthly);
 		rbMonthly.setVisible(false);
 		
 		//combobox
 		comboBox.addItem("BarChart");
 		comboBox.addItem("LineChart");
-		p_north_upper.add(comboBox);
+		p_center_upper.add(comboBox);
 		
 		//button
-		JPanel p_north_lower = new JPanel();
+		JPanel p_center_lower = new JPanel();
 		show.setContentAreaFilled(false);
 		show.setBorder(BorderFactory.createEmptyBorder());
 		show.setBorderPainted(false);
@@ -114,53 +130,37 @@ public class SalesView extends JPanel implements ActionListener {
 		
 		startDate = new JDatePickerImpl(startDatePanel, new DateLabelFormatter());
 		endDate =  new JDatePickerImpl(endDatePanel, new DateLabelFormatter());
-		p_north_lower.add(startDate);
-		p_north_lower.add(endDate);
-		p_north_lower.add(show);
-		p_north_lower.add(init);
+		p_center_lower.add(startDate);
+		p_center_lower.add(endDate);
+		p_center_lower.add(show);
+		p_center_lower.add(init);
+		p_center.add(p_center_upper);
+		p_center.add(p_center_lower);
 
-		p_north.add(p_north_upper);
-		p_north.add(p_north_lower);
-		
-		// center
-		JPanel p_center = new JPanel(new BorderLayout());
-		JButton salesInfo = new JButton(getIcon("laSalesInfo", 120, 60));
-		salesInfo.setBorderPainted(false);
-		salesInfo.setContentAreaFilled(false);
-		
-		p_center.add(salesInfo, BorderLayout.WEST);
-
-		// south
-		JPanel p_south = new JPanel();
-		panel = new ChartPanel(null);
-		p_south.add(panel);
-        
 		//color
+		p_north.setBackground(Color.WHITE);
+		startDatePanel.setBackground(Color.WHITE);
+		endDatePanel.setBackground(Color.WHITE);
+		startDate.setBackground(Color.WHITE);
+		endDate.setBackground(Color.WHITE);
+		p_center.setBackground(Color.WHITE);
+		p_south.setBackground(Color.WHITE);
+		p_center_upper.setBackground(Color.WHITE);
+		p_center_lower.setBackground(Color.WHITE);
+		panel.setBackground(Color.WHITE);
 		
-		p_north.setBackground(Color.ORANGE);
-		p_north_upper.setBackground(Color.ORANGE);
-		p_north_lower.setBackground(Color.ORANGE);
-		startDatePanel.setBackground(Color.ORANGE);
-		endDatePanel.setBackground(Color.ORANGE);
-		startDate.setBackground(Color.ORANGE);
-		endDate.setBackground(Color.ORANGE);
-		p_center.setBackground(Color.ORANGE);
-		p_south.setBackground(Color.ORANGE);
-		panel.setBackground(Color.ORANGE);
-		
-		rbDate.setBackground(Color.ORANGE);
-		rbMenu.setBackground(Color.ORANGE);
-		rbDaily.setBackground(Color.ORANGE);
-		rbMonthly.setBackground(Color.ORANGE);
-		comboBox.setBackground(Color.ORANGE);
+		rbDate.setBackground(Color.WHITE);
+		rbMenu.setBackground(Color.WHITE);
+		rbDaily.setBackground(Color.WHITE);
+		rbMonthly.setBackground(Color.WHITE);
+		comboBox.setBackground(Color.WHITE);
 		
 		// size
-		p_north_upper.setPreferredSize(new Dimension(width, (int) (height * 0.07)));
-		p_north_lower.setPreferredSize(new Dimension(width, (int) (height * 0.09)));
-		p_north.setPreferredSize(new Dimension(width, (int) (height * 0.2)));
-		p_center.setPreferredSize(new Dimension(width, (int) (height * 0.1)));
+		p_center_upper.setPreferredSize(new Dimension(width, (int) (height * 0.07)));
+		p_center_lower.setPreferredSize(new Dimension(width, (int) (height * 0.09)));
+	    p_center.setPreferredSize(new Dimension(width, (int) (height * 0.2)));
 		p_south.setSize(new Dimension(width, (int) (height * 0.6)));
-		p_south.setPreferredSize(new Dimension(width, (int) (height * 0.6)));
+		p_south.setPreferredSize(new Dimension(width, (int) (height * 0.55)));
 		panel.setPreferredSize(new Dimension(p_south.getWidth(), p_south.getHeight() - 40));
 
 		// add

@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
 import model.OrderModel;
@@ -28,16 +30,15 @@ import model.OrderModel;
 public class OrderDialog extends JDialog implements ActionListener {
 
 	JLabel title, orderNum, menuList, totalPrice;
-	JButton modify, cancle, payment;
+	JButton cancel, payment;
 	JTextField orderField, priceField;
-	JButton plus = new JButton("+");
-	JButton minus = new JButton("-");
+	JButton plus, minus;
+	
 	JTable tableOrderList;
 	DefaultTableModel tableModel;
 	Vector columnNames = new Vector();
 
 	OrderView parents;
-
 	OrderModel model;
 
 	// public OrderDialog(JTable tableOrderList) {
@@ -65,7 +66,14 @@ public class OrderDialog extends JDialog implements ActionListener {
 	}
 
 	public void addLayout() {
+        
+    	plus = new JButton(getIcon("bAdd", 30, 30));
+		plus.setBorderPainted(false);// 버튼 테두리 설정, false는 없앰
+		plus.setContentAreaFilled(false);// 버튼 영역 배경 표시 설정, false는 없앰
 
+		minus = new JButton(getIcon("bMinus", 30, 30));
+		minus.setBorderPainted(false);
+		minus.setContentAreaFilled(false);
 
 		columnNames.add("주문번호");
 		columnNames.add("메뉴명");
@@ -75,24 +83,18 @@ public class OrderDialog extends JDialog implements ActionListener {
 		tableOrderList = new JTable(tableModel);
 		setSize(500, 500);
 
-
-		
 		title = new JLabel(getIcon("laMenuCheck", 200, 50));
 		orderNum = new JLabel(getIcon("bOrderNum", 100, 30));
-		
-
 		menuList = new JLabel(getIcon("menuList", 100, 30));
 		totalPrice = new JLabel(getIcon("bTotal", 100, 30));
 		
-		modify = new JButton(getIcon("bModify", 60, 30));
-		modify.setBorderPainted(false);
-		modify.setContentAreaFilled(false);
-		cancle = new JButton(getIcon("bCancel", 60, 30));
-		cancle.setBorderPainted(false);
-		cancle.setContentAreaFilled(false);
 		payment = new JButton(getIcon("bPay", 60, 30));
 		payment.setBorderPainted(false);
 		payment.setContentAreaFilled(false);
+		cancel = new JButton(getIcon("bCancel", 60, 30));
+		cancel.setBorderPainted(false);
+		cancel.setContentAreaFilled(false);
+		
 		orderField = new JTextField();
 		priceField = new JTextField();
 
@@ -132,23 +134,17 @@ public class OrderDialog extends JDialog implements ActionListener {
 		}
 
 		JPanel p_south = new JPanel();
-		p_south.add(modify);
-		p_south.add(cancle);
 		p_south.add(payment);
-
-
-
-	
+		p_south.add(cancel);
 //컬러		
-	    p_north.setBackground(Color.ORANGE);
-	    p_center.setBackground(Color.ORANGE);
-	    p_center_north.setBackground(Color.ORANGE);
-	    p_center_center.setBackground(Color.ORANGE);
-	    p_center_south.setBackground(Color.ORANGE);
-	    p_south.setBackground(Color.ORANGE);
+	    p_north.setBackground(Color.WHITE);
+	    p_center.setBackground(Color.WHITE);
+	    p_center_east.setBackground(Color.WHITE);
+	    p_center_north.setBackground(Color.WHITE);
+	    p_center_center.setBackground(Color.WHITE);
+	    p_center_south.setBackground(Color.WHITE);
+	    p_south.setBackground(Color.WHITE);
 		
-		
-
 		setLayout(new BorderLayout());
 		p_center.add(p_center_north, BorderLayout.NORTH);
 		p_center.add(new JScrollPane(p_center_center), BorderLayout.CENTER);
@@ -166,7 +162,7 @@ public class OrderDialog extends JDialog implements ActionListener {
 
 		plus.addActionListener(this);
 		minus.addActionListener(this);
-		cancle.addActionListener(this);
+		cancel.addActionListener(this);
 		payment.addActionListener(this);
 
 	}
@@ -180,7 +176,7 @@ public class OrderDialog extends JDialog implements ActionListener {
 		} else if (minus == evt) {
 			menuMinus();
 			setTotalPrice();
-		} else if (cancle == evt) {
+		} else if (cancel == evt) {
 			tableModel.removeRow(tableOrderList.getSelectedRow());
 			setTotalPrice();
 		} else if (payment == evt) {

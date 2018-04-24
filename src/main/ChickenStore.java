@@ -21,7 +21,7 @@ public class ChickenStore extends JFrame {
   // 생성자
   public ChickenStore() { 
   // 각각의 화면을 관리하는 클래스 객체 생성
-    setSize(1000,600);
+    setSize(1000,700);
     order = new OrderView(this);
     sales = new SalesView(getWidth(), getHeight());//매출관리
     stock = new StockView();//재고관리 
@@ -32,9 +32,9 @@ public class ChickenStore extends JFrame {
           
  //컬러     
     //1.패널 배경색
-      order.setBackground(Color.ORANGE);
-      sales.setBackground(Color.ORANGE);
-      stock.setBackground(Color.ORANGE);
+      order.setBackground(Color.WHITE);
+      sales.setBackground(Color.WHITE);
+      stock.setBackground(Color.WHITE);
       
 //    stock.setBorder(new EmptyBorder(0, 0, 0, 0));
 //    sales.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -49,7 +49,7 @@ public class ChickenStore extends JFrame {
       pane.setBackgroundAt(2, Color.ORANGE);
       pane.setForegroundAt(2, Color.BLACK);
       // 탭 화면의 최초화면을 인덱스로 지정
-      pane.setSelectedIndex(1);
+      pane.setSelectedIndex(0);
       
   
       // 화면크기지정

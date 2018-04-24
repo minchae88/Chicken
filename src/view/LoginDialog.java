@@ -88,11 +88,11 @@ public class LoginDialog extends JDialog implements ActionListener {
 	    p_south.add(bCancel);
 	    
  //컬러
-	    p_north.setBackground(Color.ORANGE);
-	    p_center.setBackground(Color.ORANGE);
-	    p_center_user.setBackground(Color.ORANGE);
-	    p_center_pass.setBackground(Color.ORANGE);
-	    p_south.setBackground(Color.ORANGE);
+	    p_north.setBackground(Color.WHITE);
+	    p_center.setBackground(Color.WHITE);
+	    p_center_user.setBackground(Color.WHITE);
+	    p_center_pass.setBackground(Color.WHITE);
+	    p_south.setBackground(Color.WHITE);
 
 	    p_center.add(p_center_user);
 	    p_center.add(p_center_pass);

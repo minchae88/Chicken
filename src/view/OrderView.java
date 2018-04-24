@@ -19,18 +19,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 import main.ChickenStore;
 import model.OrderModel;
 
 public class OrderView extends JPanel implements ActionListener, MouseListener {
 
-	JLabel menu, orderList; // 왼쪽, 오른쪽의 제목
-	JButton bStoreManagement, bCancel; // 매장 관리 버튼
+	JLabel orderList, laNothing, laChickenStore, laTel ; // 왼쪽, 오른쪽의 제목
+	JButton bStoreManagement, bCancel, bLogOut; // 매장 관리 버튼
 	
 	// 메뉴 버튼 20개를 추가 할 변수들
 	int size = 20;
@@ -74,11 +76,10 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 
 	// 화면 설계 레이아웃
 	public void addLayout() {
-
-		
-		menu = new JLabel(getIcon("laMenu", 250, 80));
-		orderList = new JLabel(getIcon("laOrderList", 230, 80));
-	
+		orderList = new JLabel(getIcon("laOrderList", 200, 60));
+		laChickenStore = new JLabel(getIcon("laChickenStore", 350, 100));
+		laTel= new JLabel(getIcon("laTel", 200, 60));
+		laNothing= new JLabel(getIcon("laNothing", 200, 60));
 
 		for(int i=0; i<size; i++) {
 			btn[i] = new JButton(getIcon("c"+(i+1)+"", 150, 100));
@@ -97,43 +98,54 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		bCancel.setBorderPainted(false);
 		bCancel.setContentAreaFilled(false);
 
-
+		bLogOut= new JButton(getIcon("bLogOut", 130, 50));
+		bLogOut.setBorder(emptyBorder);
+		bLogOut.setBorderPainted(false);
+		bLogOut.setContentAreaFilled(false);
+		
 		//  테이블의 제목 생성
 		columnNames.add("주문번호");
 		columnNames.add("메뉴명");
 		columnNames.add("수량");
 		columnNames.add("가격");
 		// JTable에 붙일 DefaultTableModel 정의
-		tableModel = new DefaultTableModel(data, columnNames);
+		tableModel = new DefaultTableModel(data, columnNames){
+			public boolean isCellEditable(int rowIndex, int mColIndex){
+				return false;
+			}
+		};		
+		tableModel.setColumnIdentifiers(new String[] {"주문번호","메뉴명","수량","가격"});
 		// DefaultTableModel 붙이기
-
 		tableOrderList = new JTable(tableModel);
-
-
 		tableOrderList.setEnabled(true);
-//테이블정렬	
-		DefaultTableCellRenderer celAlignCenter = new DefaultTableCellRenderer();
-		celAlignCenter.setHorizontalAlignment(JLabel.CENTER);
-		DefaultTableCellRenderer celAlignRight = new DefaultTableCellRenderer();
-		celAlignRight.setHorizontalAlignment(JLabel.RIGHT);
-		tableOrderList.getColumn("주문번호").setPreferredWidth(80);// 컬럼의 너비
-		tableOrderList.getColumn("주문번호").setCellRenderer(celAlignCenter);// 컬럼정렬
-		tableOrderList.getColumn("메뉴명").setPreferredWidth(80);// 컬럼의 너비
-		tableOrderList.getColumn("메뉴명").setCellRenderer(celAlignCenter);// 컬럼정렬
-		tableOrderList.getColumn("수량").setPreferredWidth(80);// 컬럼의 너비
-		tableOrderList.getColumn("수량").setCellRenderer(celAlignRight);// 컬럼정렬
-		tableOrderList.getColumn("가격").setPreferredWidth(80);// 컬럼의 너비
-		tableOrderList.getColumn("가격").setCellRenderer(celAlignRight);// 컬럼정렬
-		
-
+		tableOrderList.setBackground(new Color(250, 250, 250));
+		tableOrderList.getTableHeader().setBackground(new Color(250, 250, 250));
+  //테이블정렬	
+		DefaultTableCellRenderer cellAlignCenter = new DefaultTableCellRenderer();
+		cellAlignCenter.setHorizontalAlignment(JLabel.CENTER);
+		TableColumnModel tcmTable = tableOrderList.getColumnModel();
+		for(int i=0; i< tcmTable.getColumnCount();i++){
+			tcmTable.getColumn(i).setCellRenderer(cellAlignCenter);
+		}
+//		tableOrderList.getColumn("주문번호").setPreferredWidth(80);// 컬럼의 너비
+//		tableOrderList.getColumn("주문번호").setCellRenderer(cellAlignCenter);// 컬럼정렬
+//		tableOrderList.getColumn("메뉴명").setPreferredWidth(80);// 컬럼의 너비
+//		tableOrderList.getColumn("메뉴명").setCellRenderer(cellAlignCenter);// 컬럼정렬
+//		tableOrderList.getColumn("수량").setPreferredWidth(80);// 컬럼의 너비
+//		tableOrderList.getColumn("수량").setCellRenderer(cellAlignCenter);// 컬럼정렬
+//		tableOrderList.getColumn("가격").setPreferredWidth(80);// 컬럼의 너비
+//		tableOrderList.getColumn("가격").setCellRenderer(cellAlignCenter);// 컬럼정렬
+        
+		//전체 위쪽 영역
+		JPanel p_north=new JPanel();
+		p_north.setLayout(new GridLayout(1,3));
+		p_north.add(laNothing);
+		p_north.add(laChickenStore);
+		p_north.add(laTel);
+	
 		// 전체 왼쪽 영역
 		JPanel p_west = new JPanel();
 		p_west.setLayout(new BorderLayout());
-
-		// 왼쪽 위 영역
-		JPanel p_west_north = new JPanel();
-		p_west_north.setLayout(new BorderLayout());
-		p_west_north.add(menu, BorderLayout.CENTER);
 
 		// 왼쪽 가운데 영역
 		JPanel p_menu_list = new JPanel();
@@ -168,32 +180,28 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		// 오른쪽 아래 영역
 		JPanel p_east_south = new JPanel();
 		p_east_south.add(bStoreManagement);
+		p_east_south.add(bLogOut);
 		p_east_south.add(bCancel);
 		
-
 		// 오른쪽의 오른쪽 영역
 		JPanel p_east_east = new JPanel(new GridLayout(1,10));
 		for(int i=0; i<10; i++) {
 			p_east_east.add(new JLabel(" "));
 		}
-
-
-
 	
-//컬러
-		p_west.setBackground(Color.ORANGE);
-		p_west_north.setBackground(Color.ORANGE);
-		p_menu_list.setBackground(Color.ORANGE);
-		p_west_south.setBackground(Color.ORANGE);
-		p_west_west.setBackground(Color.ORANGE);
-		p_east.setBackground(Color.ORANGE);
-		p_east_north.setBackground(Color.ORANGE);
-		p_east_south.setBackground(Color.ORANGE);
-		p_east_east.setBackground(Color.ORANGE);
+  //컬러
+		p_north.setBackground(Color.WHITE);
+		p_west.setBackground(Color.WHITE);
+		p_menu_list.setBackground(Color.WHITE);
+		p_west_south.setBackground(Color.WHITE);
+		p_west_west.setBackground(Color.WHITE);
+		p_east.setBackground(Color.WHITE);
+		p_east_north.setBackground(Color.WHITE);
+		p_east_south.setBackground(Color.WHITE);
+		p_east_east.setBackground(Color.WHITE);
 		
-
-		// 왼쪽 붙이기
-		p_west.add(p_west_north, BorderLayout.NORTH);
+	// 왼쪽 붙이기
+	//	p_west.add(p_west_north, BorderLayout.NORTH);
 		p_west.add(s_menu_list, BorderLayout.CENTER);
 		p_west.add(p_west_south, BorderLayout.SOUTH);
 		p_west.add(p_west_west, BorderLayout.WEST);
@@ -206,6 +214,7 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 
 		// 전체 붙이기
 		setLayout(new BorderLayout());
+		add(p_north, BorderLayout.NORTH);
 		add(p_west, BorderLayout.WEST);
 		add(p_east, BorderLayout.EAST);	
 	}
