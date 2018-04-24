@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -197,4 +198,5 @@ public class SalesView extends JPanel implements ActionListener {
 			panel.setChart(null);
 		}
 	}
+	
 }

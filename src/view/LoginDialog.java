@@ -8,10 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,11 +22,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import main.ChickenStore;
-import model.DBCon;
+import model.LoginModel;
 
 public class LoginDialog extends JDialog implements ActionListener {
-
-	  
 	  JLabel title, userImage, passImage;
 	  JTextField user;
 	  JPasswordField pass;
@@ -35,13 +32,16 @@ public class LoginDialog extends JDialog implements ActionListener {
 	  
 	  Connection con;
 	  ChickenStore parent;
+	  OrderView order;
+	  LoginModel loginModel;
+	  ArrayList list = new ArrayList();
 	  
 	  public LoginDialog(ChickenStore parent) throws Exception {
 	    this.parent = parent;
+	    order = parent.getOrderView();
 	    addLayout(); 
 	    eventProc(); 
-	    con = DBCon.getConnection();
-	    
+	    connectDB();	    
 	  }
 	  
 	  public ImageIcon getIcon(String name, int width, int height) {
@@ -104,31 +104,16 @@ public class LoginDialog extends JDialog implements ActionListener {
 	    setVisible(true);
 	    
 	  }
-// 로그인 화면에서 유저번호와 비밀번호를 입력 후 ok 버튼을 눌렀을 때
-public void login(String userNum, String passNum) {
-  
-  String sql = "SELECT empno, password FROM employee WHERE job = '보스님'";
-  try {
-    PreparedStatement ps = con.prepareStatement(sql);
-    ResultSet rs = ps.executeQuery();
-    
-      while(rs.next()) {
-        if(userNum.equals(rs.getString("empno"))) {
-          if(passNum.equals(rs.getString("password"))) {
-            JOptionPane.showMessageDialog(null, "로그인 성공");
-            parent.setTabIndex(1);
-            parent.visible(true);
-            this.dispose(); // JDialog를 메모리상에서 지움
-          } else JOptionPane.showMessageDialog(null, "비밀번호 다름");
-        } else JOptionPane.showMessageDialog(null, "허가되지 않은 아이디");
-      }
-      ps.close();
-      rs.close();
-  } catch (Exception e) {
-    System.out.println("로그인 오류");
-  }
-  
-} 
+
+	public void connectDB() {
+		try {
+			loginModel = new LoginModel();
+			System.out.println("로그인 디비연결 성공");
+		} catch (Exception e) {
+			System.out.println("로그인 디비연결 실패 : " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
 
   public void eventProc() {
     
@@ -157,11 +142,44 @@ public void login(String userNum, String passNum) {
     
     Object evt = e.getSource();
     if (evt == bLogin) {
-      login(user.getText(), pass.getText());
+      list = loginModel.loginGrant(); // 보스님과 매니저에 해당하는 직원번호와 비밀번호를 가져옴
+      this.login(list);
     } else if (evt == bCancel) {
       this.dispose();
     }
   }
   
-
+  public void login(ArrayList list) {
+	  
+	  int[] empno = new int[list.size()/2];
+	  int[] password = new int[list.size()/2];
+	  int count = 0;
+	  
+	  // empno와 password에 직원 번호와 패스워드를 저장
+	  for(int i=0; i<list.size()/2; i++) {
+		  empno[i] = (int)list.get(count);
+		  password[i] = (int)list.get(count+1);
+		  count += 2;
+	  
+		  if(empno[i] == Integer.parseInt(user.getText())) {
+			  if(password[i] == Integer.parseInt(pass.getText())) {
+				  JOptionPane.showMessageDialog(null, "로그인 성공");
+				  parent.Visible(true);
+				  parent.setTabIndex(1);
+				  order.bLogOut.setEnabled(true);
+				  this.dispose();
+				  break;
+			  } else {
+				  System.out.println("비번오류");
+				  continue;
+			  }
+		  } else {
+			  System.out.println("아디오류");
+			  continue;
+		  }
+		  
+	  }
+	  
+  }
+  
 }

@@ -2,7 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -16,12 +15,12 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -30,6 +29,7 @@ import main.ChickenStore;
 import model.OrderModel;
 
 public class OrderView extends JPanel implements ActionListener, MouseListener {
+
 
 	JLabel orderList, laNothing, laChickenStore, laTel ; // 왼쪽, 오른쪽의 제목
 	JButton bStoreManagement, bCancel, bLogOut; // 매장 관리 버튼
@@ -76,6 +76,7 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 
 	// 화면 설계 레이아웃
 	public void addLayout() {
+
 		orderList = new JLabel(getIcon("laOrderList", 200, 60));
 		laChickenStore = new JLabel(getIcon("laChickenStore", 350, 100));
 		laTel= new JLabel(getIcon("laTel", 200, 60));
@@ -102,7 +103,7 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		bLogOut.setBorder(emptyBorder);
 		bLogOut.setBorderPainted(false);
 		bLogOut.setContentAreaFilled(false);
-		
+
 		//  테이블의 제목 생성
 		columnNames.add("주문번호");
 		columnNames.add("메뉴명");
@@ -182,13 +183,13 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		p_east_south.add(bStoreManagement);
 		p_east_south.add(bLogOut);
 		p_east_south.add(bCancel);
-		
+
 		// 오른쪽의 오른쪽 영역
 		JPanel p_east_east = new JPanel(new GridLayout(1,10));
 		for(int i=0; i<10; i++) {
 			p_east_east.add(new JLabel(" "));
+
 		}
-	
   //컬러
 		p_north.setBackground(Color.WHITE);
 		p_west.setBackground(Color.WHITE);
@@ -217,8 +218,9 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		add(p_north, BorderLayout.NORTH);
 		add(p_west, BorderLayout.WEST);
 		add(p_east, BorderLayout.EAST);	
+		
 	}
-
+	
 	// 디비 연결
 	public void connectDB() {
 		try {
@@ -265,6 +267,7 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 			btn[i].addActionListener(this);
 		}
 		tableOrderList.addMouseListener(this);
+		bLogOut.addActionListener(this);
 
 //		tableOrderList.addMouseListener(new MouseAdapter() {
 //			@Override
@@ -294,12 +297,13 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 			}
 
 		} 
-		for(int i=0; i<size; i++){
+		for(int i=0; i<size; i++) {
 			if (evt == btn[i]) {
 				moveTable(i);
 			}	
+		} if (evt == bLogOut) {
+			logout(false);
 		}
-
 
 	}
 
@@ -338,6 +342,15 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void logout(boolean flag) {
+
+		int num = JOptionPane.showConfirmDialog(null, "로그아웃 하시겠습니까?");
+		if (num == 0) {
+			parents.Visible(false);
+			bLogOut.setEnabled(flag);
+		}	    
 	}
 
 }

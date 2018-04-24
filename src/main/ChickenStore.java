@@ -2,10 +2,10 @@ package main;
 
 import java.awt.Color;
 
+import javax.swing.JButton;
 //import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
-import javax.swing.border.EmptyBorder;
 
 import view.OrderView;
 import view.SalesView;
@@ -17,6 +17,7 @@ public class ChickenStore extends JFrame {
   SalesView sales;
   StockView stock;
   JTabbedPane pane = new JTabbedPane();
+  JButton bLogout;
   
   // 생성자
   public ChickenStore() { 
@@ -58,20 +59,22 @@ public class ChickenStore extends JFrame {
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
   }
   
-  public void setTabIndex(int i){
+  public void setTabIndex(int i) {
     pane.setSelectedIndex(i);
   }
   
-  public void visible(boolean flag) {
-    
+  public void Visible(boolean flag) {
     pane.setEnabledAt(1, flag);
-    pane.setEnabledAt(2, flag);
-    
+    pane.setEnabledAt(2, flag); 
+  }
+ 
+  public OrderView getOrderView(){
+	  return order;
   }
   
   public static void main(String[] args) {
       ChickenStore chickenStore = new ChickenStore();
-      chickenStore.visible(false);
+      chickenStore.Visible(false);
 }
 
 }
