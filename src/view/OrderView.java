@@ -272,6 +272,7 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 		}
 		tableOrderList.addMouseListener(this);
 		bLogOut.addActionListener(this);
+		bCancel.addActionListener(this);
 	}
 
 	// 이벤트가 발생했을때
@@ -285,8 +286,6 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-
-
 		} 
 		for(int i=0; i<size; i++) {
 			if (evt == btn[i]) {
@@ -294,7 +293,9 @@ public class OrderView extends JPanel implements ActionListener, MouseListener {
 			}	
 		} if (evt == bLogOut) {
 			logout();
-
+		} else if (evt == bCancel) {
+			tableModel.setNumRows(0);
+			tableModel.fireTableDataChanged();
 		}
 
 	}

@@ -31,22 +31,9 @@ public class OrderModel {
 		return oid;
 	}
 	
-//	public void getEmpno() {
-//		try {
-//			String sql = "SELECT empno FROM employee WHERE ENAME = '이지은'";
-//			Statement st = con.createStatement();
-//			ResultSet rs = st.executeQuery(sql);
-//			if(rs.next()) {
-//				empno = rs.getInt("empno");
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
 	public int insertOrderList(Vector data) throws Exception {
 
-		int result = JOptionPane.showConfirmDialog(null, "리얼 결제?");
+		int result = JOptionPane.showConfirmDialog(null, "결제 하시겠습니까?");
 		if (result == 0) {
 			String sql = "INSERT INTO orderlist (OLID, OID, MENU, COUNT, SUM_PRICE) "
 					+ "VALUES (SEQ_OLID.nextval, ?, ?, ?, ?)";

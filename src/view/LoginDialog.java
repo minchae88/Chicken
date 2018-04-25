@@ -172,11 +172,9 @@ public class LoginDialog extends JDialog implements ActionListener {
 				  this.dispose();
 				  break;
 			  } else {
-				  System.out.println("비번오류");
 				  continue;
 			  }
 		  } else {
-			  System.out.println("아디오류");
 			  continue;
 		  }
 		  
